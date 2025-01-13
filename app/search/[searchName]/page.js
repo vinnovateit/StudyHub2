@@ -14,72 +14,57 @@ export default async function page({ params }) {
   const { subjects, errors, branch } = props;
 
   return (
-    <div
-      data-theme="default"
-      data-layout="fluid"
-      data-sidebar-position="left"
-      data-sidebar-behavior="sticky"
-      className="min-h-[83vh]"
-    >
-      <div className="fixed z-[-999]">
-        <Doodle
-          rule={`
-      :doodle { @grid: 30x30; @size: 100vmax; grid-gap: 1px; } background-color:
-      hsla(@r(360), 85%, @r(70%, 90%), @r(.2)); transform: scale(@rand(.1,.9));
-        `}
-        />
-      </div>
-      <div className="wrapper">
-        <div className="main">
-          <main className="content">
-            <div className="container-fluid p-0">
-              {errors ? (
-                <>
-                  <h1 className="mb-3 text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 font-extrabold text-3xl">
-                    {errors}
-                  </h1>
-                </>
-              ) : (
-                <>
-                  <h1 className="mb-3 text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 font-extrabold text-3xl">
-                    {branch}
-                  </h1>
-                  <div className="row">
-                    {subjects.map((subject) => {
-                      return subject ? (
-                        <div
-                          className="col-12 col-md-6 col-lg-3"
-                          key={subject.code}
-                        >
-                          <div className="shadow-md hover:shadow-lg transition-shadow duration-75 max-h-[200px] min-h-[200px] card">
-                            <div className="card-header px-4 pt-4">
-                              <div className="card-actions float-right">
-                                <div className="dropdown show"></div>
-                              </div>
-                              <h4 className="card-title mb-0">{subject.name}</h4>
-                            </div>
-                            <div className="card-body px-4 pt-2">
-                              <h6>Course Code - {subject.code}</h6>
-                              <h6>Credits - {subject.credits}</h6>
-                              <h6>Modules - {subject.modules.length}</h6>
-                            </div>
-                            <a
-                              href={`/courses/${subject._id}`}
-                              className="btn border-t-0 rounded-b-none btn-info"
-                            >
-                              See Detailed Description
-                            </a>
-                          </div>
-                        </div>
-                      ) : (
-                        <></>
-                      );
-                    })}
-                  </div>
-                </>
-              )}
-            </div>
-          </main>
+    <div className="min-h-screen flex flex-col">
+      <div
+        data-theme="default"
+        data-layout="fluid"
+        data-sidebar-position="left"
+        data-sidebar-behavior="sticky"
+        className="min-h-[83vh] relative"
+      >
+        <div className="fixed -z-10">
+          <Doodle
+            rule={`:doodle { @grid: 30x30; @size: 100vmax; grid-gap: 1px; } background-color:
+              hsla(@r(360), 85%, @r(70%, 90%), @r(.2)); transform: scale(@rand(.1,.9));`}
+          />
+        </div>
+        <div className="p-4">
+          {errors ? (
+            <h1 className="text-center mb-3 bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 font-extrabold text-3xl">
+              {errors}
+            </h1>
+          ) : (
+            <>
+              <h1 className="text-center mb-3 bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 font-extrabold text-3xl">
+                {branch}
+              </h1>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {subjects.map((subject) => (
+                  subject && (
+                    <div
+                      key={subject.code}
+                      className="shadow-md hover:shadow-lg transition-shadow duration-75 rounded-md overflow-hidden max-h-[400px] min-h-[200px] flex flex-col"
+                    >
+                      <div className="px-4 pt-4">
+                        <h4 className="font-bold text-lg">{subject.name}</h4>
+                      </div>
+                      <div className="px-4 pt-2 flex-grow">
+                        <p className="text-sm">Course Code - {subject.code}</p>
+                        <p className="text-sm">Credits - {subject.credits}</p>
+                        <p className="text-sm">Modules - {subject.modules.length}</p>
+                      </div>
+                      <a
+                        href={`/courses/${subject._id}`}
+                        className="mt-auto bg-blue-500 text-white text-center py-2 hover:bg-blue-600 transition-colors"
+                      >
+                        See Detailed Description
+                      </a>
+                    </div>
+                  )
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
