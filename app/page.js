@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import connectDB from "@/lib/connectDB";
+import Link from "next/link";
 
 connectDB();
 
@@ -39,6 +40,9 @@ export default function Home() {
               }}
             ></div>
             <div className="relative px-10 py-24 box-border">
+               <Link href="editorial/login">
+        <p className="text-blue-400 hover:text-blue-600 text-xl">Go to Editorial Section</p>
+      </Link>
               <h1 className="text-transparent bg-gradient-to-r from-gray-700 via-blue-500 to-blue-400 bg-clip-text font-black text-2xl">
                 StudyHub by
                 <span className="font-thin font-mono"> VinnovateIT</span>
