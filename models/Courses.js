@@ -1,3 +1,5 @@
+// models/Courses.js
+
 import mongoose from "mongoose";
 
 const CoursesSchema = new mongoose.Schema({
@@ -38,6 +40,6 @@ const CoursesSchema = new mongoose.Schema({
   ],
 });
 
-module.exports = mongoose?.models?.courses
-  ? mongoose.models.courses
-  : mongoose.model("courses", CoursesSchema);
+
+const Course = mongoose.models.Course || mongoose.model("Course", CoursesSchema);
+export default Course;
