@@ -4,7 +4,7 @@ import Image from "next/image";
 import connectDB from "@/lib/connectDB";
 import Link from "next/link";
 
-connectDB();
+// connectDB();
 
 // export const metadata = {
 //   title: "StudyHub by VinnovateIT",
@@ -14,23 +14,23 @@ export default function Home() {
   return (
     <div className="h-screen bg-white">
       <div className="h-screen bg-white">
-        <div
-          className="fixed bottom-[75px] right-[10px] z-[9999] animate-bounce"
-          style={{
-            animation: "textgrowth 1s infinite alternate",
-          }}
-        >
-          <a href="https://play.google.com/store/apps/details?id=com.vinnovateit.studyhub">
-            <Image
-              id="gplaybadge"
-              width={120}
-              height={55}
-              src="/images/google-play-badge.png"
-              alt="App Link"
-              className="max-w-full h-auto"
-            />
-          </a>
-        </div>
+        {/*<div*/}
+        {/*  className="fixed bottom-[75px] right-[10px] z-[9999] animate-bounce"*/}
+        {/*  style={{*/}
+        {/*    animation: "textgrowth 1s infinite alternate",*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  <a href="https://play.google.com/store/apps/details?id=com.vinnovateit.studyhub">*/}
+        {/*    <Image*/}
+        {/*      id="gplaybadge"*/}
+        {/*      width={120}*/}
+        {/*      height={55}*/}
+        {/*      src="/images/google-play-badge.png"*/}
+        {/*      alt="App Link"*/}
+        {/*      className="max-w-full h-auto"*/}
+        {/*    />*/}
+        {/*  </a>*/}
+        {/*</div>*/}
         <div className="flex flex-col justify-center items-center relative h-full">
           <header className="relative w-full min-h-[80vh] bg-white flex justify-center items-center overflow-hidden">
             <div
@@ -83,22 +83,22 @@ export default function Home() {
           </header>
         </div>
       </div>
-      <style jsx>{`
-        @keyframes textgrowth {
-          0% {
-            width: 120px;
-            height: 55px;
-          }
-          50% {
-            width: 116px;
-            height: 53px;
-          }
-          100% {
-            width: 120px;
-            height: 55px;
-          }
-        }
-      `}</style>
+      {/*<style jsx>{`*/}
+      {/*  @keyframes textgrowth {*/}
+      {/*    0% {*/}
+      {/*      width: 120px;*/}
+      {/*      height: 55px;*/}
+      {/*    }*/}
+      {/*    50% {*/}
+      {/*      width: 116px;*/}
+      {/*      height: 53px;*/}
+      {/*    }*/}
+      {/*    100% {*/}
+      {/*      width: 120px;*/}
+      {/*      height: 55px;*/}
+      {/*    }*/}
+      {/*  }*/}
+      {/*`}</style>*/}
     </div>
   );
 }
