@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 const Navbar = () => {
+  const [searchText, setSearchText] = useState("");
   return (
     <>
       <nav className="navbar h-[9vh] flex items-center justify-between px-6 border-b border-gray-300 shadow-sm font-ibm bg-gradient-to-r from-white to-blue-50">
@@ -22,17 +24,33 @@ const Navbar = () => {
 
         {/* Links */}
         <div className="flex items-center space-x-4">
-          <Link href="/" className="text-blue-600 text-xl hover:underline">
-            Home
-          </Link>
-          <span className="text-gray-400">|</span>
-          <Link
-            href="/all-nighter"
-            className="text-blue-600 text-xl hover:underline"
-          >
-            All-Nighter
-          </Link>
-          <span className="text-gray-400">|</span>
+          {/*search*/}
+          <div className="search-box flex items-center space-x-4">
+            <form
+              className="flex items-center"
+              onSubmit={(e) => {
+                e.preventDefault();
+                window.location.href = `/search/${searchText}`;
+              }}
+            >
+              <input
+                type="text"
+                className="form-control search-input border border-gray-300 rounded-l-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="Search Course"
+                aria-label="Search"
+                name="query"
+                id="autoCourse"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white text-lg rounded-r-md px-4 py-3 flex items-center justify-center hover:bg-blue-600 transition-colors"
+              >
+                <i className="fas fa-search"></i>
+              </button>
+            </form>
+          </div>
           <button className="bg-blue-500 text-white text-xl px-4 py-1 rounded-md hover:bg-blue-600 transition">
             Login
           </button>
