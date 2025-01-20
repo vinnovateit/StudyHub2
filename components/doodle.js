@@ -1,13 +1,15 @@
 "use client";
 
-import React from "react";
-import "css-doodle";
+import dynamic from "next/dynamic";
 
-const Doodle = ({ rule = "" }) => {
-    return(
-        <css-doodle>{rule}</css-doodle> 
-    )
-}
+const DoodleComponent = ({ rule = "" }) => {
+    return <css-doodle>{rule}</css-doodle>;
+};
 
-export default Doodle; 
+const Doodle = dynamic(() => {
+    import("css-doodle");
+    return Promise.resolve(DoodleComponent);
+}, { ssr: false });
+
+export default Doodle;
 
