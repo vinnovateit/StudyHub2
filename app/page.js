@@ -51,15 +51,15 @@ export default function Home() {
         Choose your Branch
       </h1>
       <div className="flex flex-wrap justify-center gap-4 mt-8">
-        {["IT", "CSE", "MECH", "ECE", "EEE", "CIVIL", "1st SEM"].map(
+        {["IT", "CSE", "MECH", "ECE", "EEE", "CIVIL", "1st SEM", "CHEM"].map(
           (branch) => (
-            <button
+            <a
               key={branch}
               href={`branch/${branch}`}
               className="bg-blue-500 text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-600 transition"
             >
               {branch}
-            </button>
+            </a>
           )
         )}
       </div>
