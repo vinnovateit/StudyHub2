@@ -1,46 +1,27 @@
-import { NextResponse } from "next/server";
-import connectDB from "@/lib/connectDB";
-import branch from "../../../models/Branch";
+import Branch from '../../../models/Branch';
+import connectDB from '../../../lib/connectDB';
 
+connectDB();
 
-export async function POST(req) {
-    const { searchQuery } = await req.json()
-
-    try {
-        await connectDB();
-
-
-        let branchName = searchQuery;
-        branchName = branchName.toUpperCase();
-        
-
-        const branchData = await branch.find({ name: branchName }).populate("subjects").exec();
-        const subjects = branchData[0].subjects;
-        let errors = null;
-        
-        if (!subjects || subjects.length === 0) {
-            console.log("Subject Error: No Subjects Found");
-            errors = "Internal Server Error! Please visit after sometime";
-            
-        }
-        return NextResponse.json( {
-            props: {
-                subjects: JSON.parse(JSON.stringify(subjects)),
-                errors: JSON.parse(JSON.stringify(errors)),
-            },
-        },{status:200});
-    } catch (e) {
-        console.log("Error in connecting to DB!", e.message);
-        
-        const errors = "Internal Server Error! Please visit after sometime";
-        return NextResponse.json({
-            props: {
-                subjects: {},
-                errors: JSON.parse(JSON.stringify(errors)),
-            },
-        },{status:400});
-    }
-
-
-
+// GET - Fetch all branches
+export async function GET() {
+  try {
+    const branches = await Branch.find().populate('courses');
+    return new Response(JSON.stringify(branches), { status: 200 });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+  }
 }
+
+// POST - Create a new branch
+export async function POST(req) {
+  const { name, schoolName, courses } = await req.json();
+  try {
+    const branch = new Branch({ name, schoolName, courses });
+    await branch.save();
+    return new Response(JSON.stringify(branch), { status: 201 });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 400 });
+  }
+}
+

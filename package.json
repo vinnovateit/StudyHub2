@@ -11,6 +11,7 @@
   "dependencies": {
     "@material-tailwind/react": "^2.1.9",
     "css-doodle": "^0.38.4",
+    "dotenv": "^16.4.7",
     "jquery": "^3.7.1",
     "mongoose": "^8.9.5",
     "next": "^14.1.3",
