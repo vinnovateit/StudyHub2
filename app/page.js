@@ -66,21 +66,20 @@ export default function Home() {
           </h1>
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             {[
-              "IT",
-              "CSE",
-              "MECH",
-              "ECE",
-              "EEE",
-              "CIVIL",
-              "1st SEM",
-              "CHEM",
-            ].map((branch) => (
+    { name: "IT", route: "/branch/it" },
+    { name: "CSE", route: "/branch/cse" },
+    { name: "MECH", route: "/branch/mech" },
+    { name: "ECE", route: "/branch/ece" },
+    { name: "EEE", route: "/branch/eee" },
+    { name: "1st SEM", route: "/branch/firstsem" },
+    { name: "U.C.", route: "/branch/uc" },
+  ].map((branch) => (
               <a
-                key={branch}
-                href={`branch/${branch}`}
+                key={branch.name}
+                href={branch.route}
                 className="bg-blue-500 text-white font-semibold text-xs sm:text-sm md:text-base lg:text-lg px-3 sm:px-4 md:px-6 py-2 rounded-md hover:bg-blue-600 transition"
               >
-                {branch}
+                {branch.name}
               </a>
             ))}
           </div>
