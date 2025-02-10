@@ -4,10 +4,11 @@ import Image from "next/image";
 import connectDB from "@/lib/connectDB";
 import Link from "next/link";
 
-connectDB();
+// connectDB();
 
 export default function Home() {
   return (
+
     <div className="min-h-screen py-20 bg-gradient-to-br from-white to-blue-100 flex flex-col items-center justify-center font-ibm px-4 md:px-8 lg:px-12">
       {/* Heading Section and Image Section */}
       <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl mx-auto mb-10">
