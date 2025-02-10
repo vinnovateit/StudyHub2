@@ -1,84 +1,44 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
 const Footer = () => {
   return (
-    <>
-      <footer className="h-[9vh] bg-gray-900 text-gray-400 flex items-center">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-between items-center">
-            {/* Links Section */}
-            <div className="flex space-x-4 items-center pl-1 pb-1 md:hidden">
-              <ul className="flex space-x-4">
-                <li>
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://vinnovateit.com/"
-                    className="text-gray-400"
-                  >
-                    <Image
-                      src="/img/VinnovateIT_small.png"
-                      alt=""
-                      height={24}
-                      width={36}
-                      className="max-w-full h-auto"
-                    />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://www.instagram.com/vinnovateit/?hl=en"
-                    className="text-gray-400 hover:text-gray-300"
-                  >
-                    <i className="fab fa-instagram"></i>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://twitter.com/v_innovate_it?lang=en"
-                    className="text-gray-400 hover:text-gray-300"
-                  >
-                    <i className="fab fa-twitter"></i>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://github.com/vinnovateit"
-                    className="text-gray-400 hover:text-gray-300"
-                  >
-                    <i className="fab fa-github"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
+    <footer className="flex justify-between items-center w-full px-8 text-gray-500 bg-white py-4 bg-gradient-to-r from-blue-50 to-blue-100">
+      {/* VinnovateIT Logo */}
+      <div className="flex items-center">
+        <Image
+          src="/img/VinnovateIT_small.png" // Place your VinnovateIT logo in /public/img/
+          alt="VinnovateIT Logo"
+          width={80}
+          height={40}
+        />
+      </div>
 
-            {/* Copyright Section */}
-            <div className="mt-2 mx-auto md:ml-auto md:pr-20 text-center md:text-left text-sm">
-              <p className="m-0">
-                &copy; 2025 -{" "}
-                <Link
-                  href="https://vinnovateit.com/"
-                  className="text-gray-400 hover:text-gray-300"
-                >
-                  MADE With{" "}
-                  <span className="text-red-600 text-[14px]">&#10084;</span>{" "}
-                  By VinnovateIT
-                </Link>
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </>
+      {/* Social Links */}
+      <div className="flex space-x-4">
+        <Link
+          href="https://github.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i className="fab fa-github text-3xl hover:text-black transition"></i>
+        </Link>
+        <Link
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i className="fab fa-instagram text-3xl hover:text-black transition"></i>
+        </Link>
+        <Link
+          href="https://twitter.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i className="fab fa-twitter text-3xl hover:text-black transition"></i>
+        </Link>
+      </div>
+    </footer>
   );
 };
 
