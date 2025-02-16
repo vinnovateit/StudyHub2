@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, AlertCircle } from "lucide-react";
+import { Mail, Lock, AlertCircle, Loader } from "lucide-react";
 import { IBM_Plex_Mono, Poppins } from 'next/font/google';
 
 const poppins = Poppins({
@@ -21,6 +21,7 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [isShaking, setIsShaking] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -31,6 +32,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -52,11 +54,13 @@ export default function LoginPage() {
       setError("An error occurred. Please try again.");
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 650);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-blue-50 to-blue-100 relative">
+    <div className="min-h-screen w-full bg-gradient-to-b from-white via-[#C3ECFF] to-[#9FE5FF] relative">
       <div className="flex items-center justify-center min-h-screen px-4 py-8">
         <div className={`w-full max-w-xl p-6 md:p-12 bg-white rounded-xl shadow-lg ${isShaking ? 'animate-shake' : ''}`}>
           <h1 className={`${poppins.className} text-3xl md:text-4xl font-bold text-center text-blue-500 mb-8 md:mb-12`}>
@@ -97,9 +101,10 @@ export default function LoginPage() {
             </div>
             <button
               type="submit"
-              className={`${ibmPlexMono.className} w-full py-3 text-base md:text-lg bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition-colors`}
+              className={`${ibmPlexMono.className} w-full py-3 text-base md:text-lg bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition-colors flex items-center justify-center gap-2 disabled:bg-blue-300 disabled:cursor-not-allowed`}
+              disabled={loading}
             >
-              LOGIN
+              {loading ? <Loader className="animate-spin h-5 w-5" /> : "LOGIN"}
             </button>
           </form>
         </div>
