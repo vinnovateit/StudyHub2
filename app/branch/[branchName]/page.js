@@ -38,7 +38,7 @@ export default async function page({ params }) {
 
   return (
     <div
-      className={`${ibmPlexMono.className} min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white via-[#C3ECFF] to-[#9FE5FF]`}
+      className={`${ibmPlexMono.className} min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white to-blue-100`}
     >
       <div
         data-theme="default"
@@ -67,18 +67,6 @@ export default async function page({ params }) {
               >
                 {branchName.toUpperCase()}
               </h1>
-
-              {/* Search Bar */}
-              <div className="flex justify-center mb-6 w-full max-w-md">
-                <input
-                  type="text"
-                  placeholder="Search Course"
-                  className="border rounded-lg px-4 py-2 w-full"
-                />
-                <button className="bg-[#007BFF] text-white px-4 py-2 rounded-lg ml-2 hover:bg-[#0056b3] transition">
-                  <FaSearch />
-                </button>
-              </div>
 
               {/* Cards Section */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 place-items-center">
@@ -130,5 +118,3 @@ export default async function page({ params }) {
     </div>
   );
 }
-
-
