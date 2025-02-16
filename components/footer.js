@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="flex justify-between items-center w-full px-8 text-gray-500 bg-white py-4 bg-gradient-to-r from-blue-50 to-blue-100">
+    <footer className="flex justify-between items-center w-full px-8 text-gray-500 bg-white py-4 pt-16 bg-gradient-to-r from-blue-50 to-blue-100">
       {/* VinnovateIT Logo */}
       <div className="flex items-center">
         <Image
