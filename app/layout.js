@@ -1,10 +1,23 @@
-import { Poppins } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script';
 import { Fragment } from 'react';
 import NextHead from 'next/head';
 import NAVBAR from "../components/navbar"
 import FOOTER from "../components/footer"
+import { Poppins, IBM_Plex_Mono } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-poppins",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["100"],
+  variable: "--font-ibm-plex-mono",
+});
+
 
 export const metadata = {
   title: "StudyHub by VinnovateIT",
@@ -79,7 +92,7 @@ export default function RootLayout({ children }) {
 
         </NextHead>
       </Fragment>
-      <body>
+      <body className={`${poppins.variable} ${ibmPlexMono.variable}`}>
         <NAVBAR></NAVBAR>
         {children}
         <FOOTER></FOOTER>
