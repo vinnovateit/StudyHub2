@@ -20,9 +20,7 @@ export default function SearchBar() {
       <button
         className="bg-[#007BFF] text-white px-4 py-2 rounded-lg ml-2 hover:bg-[#0056b3] transition"
         onClick={() => {
-          if (searchText && searchText.trim() !== "") {
-            window.location.href = `/search/${searchText}`;
-          }
+          console.log(searchText);
         }}
       >
         <FaSearch />
