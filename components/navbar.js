@@ -10,7 +10,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar h-[7vh] flex items-center justify-between px-4 sm:px-6 border-b border-gray-300 shadow-sm font-ibm bg-gradient-to-r from-white to-blue-50">
+      <nav className="navbar h-[9vh] flex items-center justify-between px-4 sm:px-6 border-b border-gray-300 shadow-sm font-ibm bg-gradient-to-r from-white to-blue-50">
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
@@ -19,7 +19,7 @@ const Navbar = () => {
               height={60}
               width={70}
               alt="StudyHub Logo"
-              className="w-12 sm:w-14 mt-1"
+              className="w-12 sm:w-14 mt-2"
             />
           </Link>
         </div>

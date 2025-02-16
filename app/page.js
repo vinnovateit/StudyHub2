@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen py-8 bg-gradient-to-br from-white to-blue-100 flex flex-col items-center justify-center font-ibm px-4 md:px-8 lg:px-12 relative">
+    <div className="min-h-screen py-8 pb-24 bg-gradient-to-br from-white to-blue-100 flex flex-col items-center justify-center font-ibm px-4 md:px-8 lg:px-12 relative">
       {/* Heading Section */}
       <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl mx-auto mb-10">
         {/* Text Section */}
