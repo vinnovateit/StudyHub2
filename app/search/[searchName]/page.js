@@ -1,5 +1,18 @@
 import React from "react";
 import Doodle from "@/components/doodle";
+import { FaSearch } from "react-icons/fa";
+import { IBM_Plex_Mono, Poppins } from "next/font/google";
+
+// Import Fonts
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 async function getData(s) {
   const prop = await fetch(`http://localhost:3000/api/search/`, {
@@ -10,61 +23,91 @@ async function getData(s) {
 }
 
 export default async function page({ params }) {
+  let searchName = params.searchName;
   const { props } = await getData(params.searchName);
   const { subjects, errors, branch } = props;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div
+      className={`${ibmPlexMono.className} min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white to-blue-100`}
+    >
       <div
         data-theme="default"
         data-layout="fluid"
         data-sidebar-position="left"
         data-sidebar-behavior="sticky"
-        className="min-h-[83vh] relative"
+        className="min-h-[100vh] w-full flex flex-col items-center"
       >
         <div className="fixed -z-10">
           <Doodle
             rule={`:doodle { @grid: 30x30; @size: 100vmax; grid-gap: 1px; } background-color:
-              hsla(@r(360), 85%, @r(70%, 90%), @r(.2)); transform: scale(@rand(.1,.9));`}
+                hsla(@r(360), 85%, @r(70%, 90%), @r(.2)); transform: scale(@rand(.1,.9));`}
           />
         </div>
-        <div className="p-4">
+
+        {/* Fixed Header Container */}
+        <div className="w-full h-24 mb-6 flex items-center justify-center">
           {errors ? (
-            <h1 className="text-center mb-3 bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 font-extrabold text-3xl">
+            <div
+              className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 text-center truncate"
+              style={{ lineHeight: "6rem" }}
+            >
               {errors}
-            </h1>
+            </div>
           ) : (
-            <>
-              <h1 className="text-center mb-3 bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 font-extrabold text-3xl">
-                {branch}
-              </h1>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {subjects.map((subject) => (
-                  subject && (
-                    <div
-                      key={subject.code}
-                      className="shadow-md hover:shadow-lg transition-shadow duration-75 rounded-md overflow-hidden max-h-[400px] min-h-[200px] flex flex-col"
-                    >
-                      <div className="px-4 pt-4">
-                        <h4 className="font-bold text-lg">{subject.name}</h4>
-                      </div>
-                      <div className="px-4 pt-2 flex-grow">
-                        <p className="text-sm">Course Code - {subject.code}</p>
-                        <p className="text-sm">Credits - {subject.credits}</p>
-                        <p className="text-sm">Modules - {subject.modules.length}</p>
-                      </div>
+            <div
+              className={`${poppins.className} text-4xl font-extrabold text-blue-600 text-center truncate`}
+              style={{ lineHeight: "6rem" }}
+            >
+              Your Search Results:
+            </div>
+          )}
+        </div>
+
+        <div className="p-6 w-full flex flex-col items-center">
+          {/* Cards Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 place-items-center">
+            {subjects.map(
+              (subject) =>
+                subject && (
+                  <div
+                    key={subject.code}
+                    className="relative bg-white rounded-xl border border-gray-300 w-[310px] h-[360px] text-sm p-6 flex flex-col"
+                  >
+                    <h4 className="font-extrabold text-lg text-gray-900">
+                      {subject.name}
+                    </h4>
+                    <p className="text-gray-500">
+                      <span className="font-semibold">Course Code:</span>{" "}
+                      {subject.code}
+                    </p>
+                    <p className="text-gray-500">
+                      <span className="font-semibold">Credits:</span>{" "}
+                      {subject.credits}
+                    </p>
+                    <p className="text-gray-500">
+                      <span className="font-semibold">Modules:</span>{" "}
+                      {subject.modules.length}
+                    </p>
+
+                    <p className="text-gray-600 mt-3 text-sm leading-relaxed flex-grow">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua.
+                    </p>
+
+                    <div className="mt-auto">
                       <a
                         href={`/courses/${subject._id}`}
-                        className="mt-auto bg-blue-500 text-white text-center py-2 hover:bg-blue-600 transition-colors"
+                        className="block text-center bg-[#007BFF] text-white font-medium rounded-md py-2 hover:bg-[#0056b3] transition"
                       >
-                        See Detailed Description
+                        View more info
                       </a>
                     </div>
-                  )
-                ))}
-              </div>
-            </>
-          )}
+                  </div>
+                )
+            )}
+          </div>
         </div>
       </div>
     </div>
