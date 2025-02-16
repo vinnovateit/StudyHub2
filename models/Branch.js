@@ -1,17 +1,20 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'; 
 
-const BranchSchema = new mongoose.Schema({
+const branchSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
-  school: {
+  schoolName: {
     type: String,
-    required: true,
+    required: true
   },
-  subjects: [{ type: mongoose.Schema.Types.ObjectId, ref: "courses" }],
+  courses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course'
+  }]
 });
 
-module.exports = mongoose?.models?.branch
-  ? mongoose.models.branch
-  : mongoose.model("branch", BranchSchema);
+const Branch = mongoose.models.Branch || mongoose.model('Branch', branchSchema);
+
+export default Branch;
