@@ -49,7 +49,12 @@ const Navbar = () => {
                        sm:border sm:border-blue-500
                        sm:rounded-r-md sm:px-4 sm:py-2.5 sm:text-md
                        w-8 h-8 sm:w-auto sm:h-auto"
-            onClick={() => setShowInput((prev) => !prev)}
+            onClick={() => {
+              setShowInput((prev) => !prev);
+              if (searchText && searchText.trim() !== "") {
+                window.location.href = `/search/${searchText}`;
+              }
+            }}
           >
             <i className="fas fa-search"></i>
           </button>
