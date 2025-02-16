@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Doodle from "@/components/doodle";
-import Image from "next/image";
-import { FaSearch } from "react-icons/fa";
+import SearchBar from "./SeacrhBar";
 import { IBM_Plex_Mono, Poppins } from "next/font/google";
 
 // Import fonts
@@ -67,6 +66,10 @@ export default async function page({ params }) {
               >
                 {branchName.toUpperCase()}
               </h1>
+              {/* Search Bar */}
+              <div className="flex justify-center mb-6 w-full max-w-md">
+                <SearchBar />
+              </div>
 
               {/* Cards Section */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 place-items-center">
