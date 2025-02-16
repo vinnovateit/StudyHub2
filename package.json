@@ -12,6 +12,7 @@
     "@material-tailwind/react": "^2.1.9",
     "aws4": "^1.13.2",
     "css-doodle": "^0.38.4",
+    "fuse.js": "^7.1.0",
     "jquery": "^3.7.1",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.475.0",

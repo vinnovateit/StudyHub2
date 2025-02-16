@@ -23,46 +23,27 @@ async function getData(s) {
 }
 
 export default async function page({ params }) {
-  let searchName = params.searchName;
-  const { props } = await getData(params.searchName);
-  const { subjects, errors, branch } = props;
+  const searchName = decodeURIComponent(params.searchName);
+  const { props } = await getData(searchName);
+  const { subjects = [], errors = null } = props || {};
+
+  const displayQuery = searchName.replace(/%20/g, " ");
 
   return (
-    <div
-      className={`${ibmPlexMono.className} min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white to-blue-100`}
-    >
-      <div
-        data-theme="default"
-        data-layout="fluid"
-        data-sidebar-position="left"
-        data-sidebar-behavior="sticky"
-        className="min-h-[100vh] w-full flex flex-col items-center"
-      >
-        <div className="fixed -z-10">
-          <Doodle
-            rule={`:doodle { @grid: 30x30; @size: 100vmax; grid-gap: 1px; } background-color:
-                hsla(@r(360), 85%, @r(70%, 90%), @r(.2)); transform: scale(@rand(.1,.9));`}
-          />
-        </div>
-
-        {/* Fixed Header Container */}
-        <div className="w-full h-24 mb-6 flex items-center justify-center">
-          {errors ? (
-            <div
-              className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 text-center truncate"
-              style={{ lineHeight: "6rem" }}
-            >
-              {errors}
-            </div>
-          ) : (
-            <div
-              className={`${poppins.className} text-4xl font-extrabold text-blue-600 text-center truncate`}
-              style={{ lineHeight: "6rem" }}
-            >
-              Your Search Results:
-            </div>
-          )}
-        </div>
+    <div className={`${ibmPlexMono.className} min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white to-blue-100`}>
+      {/* ... other JSX ... */}
+      
+      <div className="w-full h-24 mb-6 flex items-center justify-center">
+        {errors ? (
+          <div className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-teal-400 text-center truncate">
+            {errors}
+          </div>
+        ) : (
+          <div className={`${poppins.className} text-4xl font-extrabold text-blue-600 text-center truncate`}>
+            Results for "{displayQuery}"
+          </div>
+        )}
+      </div>
 
         <div className="p-6 w-full flex flex-col items-center">
           {/* Cards Section */}
@@ -110,6 +91,6 @@ export default async function page({ params }) {
           </div>
         </div>
       </div>
-    </div>
+
   );
 }
