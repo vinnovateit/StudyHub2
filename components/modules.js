@@ -42,10 +42,10 @@ export function Modules({ modules }) {
             open={open === module.num}
             icon={<Icon id={module.num} open={open} />}
             key={module.num}
-            className="rounded-md w-[90vw] mx-auto mb-4"
+            className="rounded-md w-[65vw]"
           >
             <AccordionHeader
-              className="px-4 py-3 bg-gray-700 text-white text-sm uppercase tracking-wide hover:bg-gray-800 transition-all"
+              className="px-4 py-3 bg-blue-700 text-white text-sm uppercase tracking-wide hover:bg-gray-800 transition-all"
               onClick={() => handleOpen(module.num)}
             >
               MODULE {module.num}

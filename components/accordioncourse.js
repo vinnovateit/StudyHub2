@@ -16,7 +16,7 @@ const AccordionCourse = ({ modules }) => {
           key={module.num}
         >
           <div
-            className="p-[1.45em] bg-[#4C4E50] text-white cursor-pointer text-[0.7em] uppercase tracking-[0.1em] transition-all hover:bg-[#272829] js-accordion-header"
+            className="p-[1.45em] bg-[#2d34ec] text-white cursor-pointer text-[0.7em] uppercase tracking-[0.1em] transition-all hover:bg-[#272829] js-accordion-header"
           >
             MODULE {module.num}{" "}
             <i className="fas fa-angle-down float-right"></i>
