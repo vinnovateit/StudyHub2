@@ -1,6 +1,4 @@
 import React from "react";
-import Doodle from "@/components/doodle";
-import { FaSearch } from "react-icons/fa";
 import { IBM_Plex_Mono, Poppins } from "next/font/google";
 
 // Import Fonts
