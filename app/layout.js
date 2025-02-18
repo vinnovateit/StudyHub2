@@ -92,7 +92,7 @@ export default function RootLayout({ children }) {
 
         </NextHead>
       </Fragment>
-      <body className={`${poppins.variable} ${ibmPlexMono.variable}`}>
+      <body className={`${poppins.variable} ${ibmPlexMono.variable} bg-gradient-to-br from-white to-blue-100`}>
         <NAVBAR></NAVBAR>
         {children}
         <FOOTER></FOOTER>
@@ -109,7 +109,7 @@ export default function RootLayout({ children }) {
           src="https://kit.fontawesome.com/695fbc93f3.js"
           crossOrigin="anonymous"
         />
-        <Script rel="preload" strategy="beforeInteractive" src="https://unpkg.com/css-doodle@0.14.2/css-doodle.min.js" />  
+          
       </body>
     </html>
   );

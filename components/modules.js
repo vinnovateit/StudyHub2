@@ -7,6 +7,13 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+import { IBM_Plex_Mono} from "next/font/google";
+
+// Import Fonts
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 function Icon({ id, open }) {
   return (
@@ -35,35 +42,28 @@ export function Modules({ modules }) {
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
 
   return (
-    <div className="p-4 border border-black text-lg backdrop-blur-xl w-full min-h-[83vh]">
+    <div className={`${ibmPlexMono.className} p-4 mx-auto text-lg backdrop-blur-xl max-w-5xl`}>
       {modules.map((module) => {
         return (
           <Accordion
             open={open === module.num}
             icon={<Icon id={module.num} open={open} />}
             key={module.num}
-            className="rounded-md w-[65vw]"
+            className="rounded-md w-[80vw] align-center"
           >
             <AccordionHeader
-              className="px-4 py-3 bg-blue-700 text-white text-sm uppercase tracking-wide hover:bg-gray-800 transition-all"
+              className="p-4 bg-blue-700 text-white text-sm md:text-md uppercase tracking-wide hover:bg-blue-900 transition-all"
               onClick={() => handleOpen(module.num)}
             >
               MODULE {module.num}
             </AccordionHeader>
-            <AccordionBody className="bg-gray-50 text-gray-700">
-              <div className="relative overflow-hidden p-6 bg-center bg-no-repeat bg-contain bg-[url('/img/viitlogo.png')] text-base">
+            <AccordionBody className="bg-gradient-to-br from-white to-blue-200 text-black">
+              <div className="relative overflow-hidden p-6 text-base">
                 <span
                   dangerouslySetInnerHTML={{
                     __html: module.sanitizedHtml,
                   }}
                   className="relative z-10"
-                />
-                <Image
-                  src="/img/VinnovateIT_small.png"
-                  height={50}
-                  width={20}
-                  alt="VinnovateIT"
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0 opacity-40"
                 />
               </div>
             </AccordionBody>
