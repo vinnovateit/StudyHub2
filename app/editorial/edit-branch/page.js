@@ -68,7 +68,9 @@ export default function EditBranchForm() {
     setSelectedCourses((prev) => {
       const isSelected = prev.includes(courseId);
       if (isSelected) {
+        console.log(courseId);
         return prev.filter((id) => id !== courseId);
+        
       } else {
         return [...prev, courseId];
       }
@@ -144,9 +146,9 @@ export default function EditBranchForm() {
                 <div key={course.id} className="flex items-center px-4 py-2 border-b border-gray-100 last:border-b-0">
                   <input
                     type="checkbox"
-                    id={`course-${course.id}`}
-                    checked={selectedCourses.includes(course.id)}
-                    onChange={() => handleCourseSelection(course.id)}
+                    id={`course-${course._id}`}
+                    checked={selectedCourses.includes(course._id)}
+                    onChange={() => handleCourseSelection(course._id)}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label htmlFor={`course-${course.id}`} className="ml-3 text-sm text-gray-700">

@@ -88,16 +88,16 @@ export default function AddBranchForm() {
           {!isLoading && !error && courses.length === 0 && <div className="text-center py-4 text-gray-500">No courses available.</div>}
           
 
-          //TODO: fix this bug when everything is selected upon clicking a button
+         
           {!isLoading && !error && courses.length > 0 && (
             <div className="max-h-60 overflow-y-auto border border-gray-200 rounded-md">
               {courses.map((course) => (
                 <div key={course.id} className="flex items-center px-4 py-2 border-b border-gray-100 last:border-b-0">
-                  <input
+                 <input
                     type="checkbox"
-                    id={`course-${course.id}`}
-                    checked={selectedCourses.includes(course.id)}
-                    onChange={() => handleCourseSelection(course.id)}
+                    id={`course-${course._id}`}
+                    checked={selectedCourses.includes(course._id)}
+                    onChange={() => handleCourseSelection(course._id)}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label htmlFor={`course-${course.id}`} className="ml-3 text-sm text-gray-700">
