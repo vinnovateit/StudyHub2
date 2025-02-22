@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const CourseForm = ({ courseCode }) => {
   const [course, setCourse] = useState({
@@ -184,6 +185,33 @@ const CourseForm = ({ courseCode }) => {
     });
   };
 
+  const removeResourceItem = (resourceType, index) => {
+    const updatedResources = [...course[resourceType]];
+    updatedResources.splice(index, 1);
+    setCourse({
+      ...course,
+      [resourceType]: updatedResources
+    });
+  };
+
+  const removeModuleResource = (moduleIndex, resourceType, resourceIndex) => {
+    const updatedModules = [...course.modules];
+    updatedModules[moduleIndex][resourceType].splice(resourceIndex, 1);
+    setCourse({
+      ...course,
+      modules: updatedModules
+    });
+  };
+
+  const removeTopicResource = (moduleIndex, topicIndex, resourceType, resourceIndex) => {
+    const updatedModules = [...course.modules];
+    updatedModules[moduleIndex].topics[topicIndex][resourceType].splice(resourceIndex, 1);
+    setCourse({
+      ...course,
+      modules: updatedModules
+    });
+  };
+
   const clearForm = () => {
     if (window.confirm('Are you sure you want to clear all form data?')) {
       localStorage.removeItem('courseFormData');
@@ -272,6 +300,28 @@ const CourseForm = ({ courseCode }) => {
       ...course,
       modules: updatedModules
     });
+  };
+
+  const removeModule = (moduleIndex) => {
+    if (window.confirm('Are you sure you want to remove this module?')) {
+      const updatedModules = [...course.modules];
+      updatedModules.splice(moduleIndex, 1);
+      setCourse({
+        ...course,
+        modules: updatedModules
+      });
+    }
+  };
+
+  const removeTopic = (moduleIndex, topicIndex) => {
+    if (window.confirm('Are you sure you want to remove this topic?')) {
+      const updatedModules = [...course.modules];
+      updatedModules[moduleIndex].topics.splice(topicIndex, 1);
+      setCourse({
+        ...course,
+        modules: updatedModules
+      });
+    }
   };
 
   return (
@@ -369,13 +419,22 @@ const CourseForm = ({ courseCode }) => {
                 placeholder="URL"
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
-              <input
-                type="text"
-                value={item.text}
-                onChange={(e) => updateResourceItem(resourceType, index, 'text', e.target.value)}
-                placeholder="Text"
-                className="w-full p-2 border border-gray-300 rounded-md"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={item.text}
+                  onChange={(e) => updateResourceItem(resourceType, index, 'text', e.target.value)}
+                  placeholder="Text"
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+                <button
+                  onClick={() => removeResourceItem(resourceType, index)}
+                  className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                  title="Remove item"
+                >
+                  <FaRegTrashAlt />
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -391,41 +450,56 @@ const CourseForm = ({ courseCode }) => {
       </div>
       
       {course.modules.map((module, moduleIndex) => (
-        <div key={moduleIndex} className="border border-gray-200 rounded-md p-4 mb-4">
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Module Title:
-            </label>
-            <input
-              type="text"
-              value={module.title}
-              onChange={(e) => updateModule(moduleIndex, 'title', e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
-            />
+        <div key={moduleIndex} className="bg-white border-2 border-blue-100 rounded-lg p-6 mb-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="bg-blue-100 px-3 py-1.5 rounded-md text-sm font-medium text-blue-700">
+              Module {moduleIndex + 1}
+            </span>
+            <button
+              onClick={() => removeModule(moduleIndex)}
+              className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+              title="Remove module"
+            >
+              <FaRegTrashAlt />
+            </button>
           </div>
-          
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Module Description:
-            </label>
-            <textarea
-              value={module.description || ''}
-              onChange={(e) => updateModule(moduleIndex, 'description', e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              rows="2"
-            />
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Module Title:
+              </label>
+              <input
+                type="text"
+                value={module.title}
+                onChange={(e) => updateModule(moduleIndex, 'title', e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Module Description:
+              </label>
+              <textarea
+                value={module.description || ''}
+                onChange={(e) => updateModule(moduleIndex, 'description', e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                rows="2"
+              />
+            </div>
           </div>
           
           {/* Module-level resources */}
           {['pdfs', 'links', 'videos'].map((resourceType) => (
-            <div key={resourceType} className="mb-4">
+            <div key={resourceType} className="mt-4 p-4 bg-gray-50 rounded-md">
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-sm font-medium text-gray-700">
                   Module {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
                 </label>
                 <button
                   onClick={() => addModuleResource(moduleIndex, resourceType)}
-                  className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md text-xs hover:bg-gray-300"
+                  className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 rounded-md text-xs hover:bg-gray-50"
                 >
                   + Add {resourceType.slice(0, -1)}
                 </button>
@@ -438,92 +512,127 @@ const CourseForm = ({ courseCode }) => {
                     value={item.url}
                     onChange={(e) => updateModuleResource(moduleIndex, resourceType, resourceIndex, 'url', e.target.value)}
                     placeholder="URL"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
                   />
-                  <input
-                    type="text"
-                    value={item.text}
-                    onChange={(e) => updateModuleResource(moduleIndex, resourceType, resourceIndex, 'text', e.target.value)}
-                    placeholder="Text"
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-              ))}
-            </div>
-          ))}
-
-          <div className="mb-4">
-            <button
-              onClick={() => addTopic(moduleIndex)}
-              className="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
-            >
-              Add Topic
-            </button>
-          </div>
-          
-          {module.topics.map((topic, topicIndex) => (
-            <div key={topicIndex} className="ml-4 border-l-2 border-gray-200 pl-4 mb-4">
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Topic Name:
-                </label>
-                <input
-                  type="text"
-                  value={topic.name}
-                  onChange={(e) => updateTopic(moduleIndex, topicIndex, 'name', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Topic Description:
-                </label>
-                <textarea
-                  value={topic.description}
-                  onChange={(e) => updateTopic(moduleIndex, topicIndex, 'description', e.target.value)}
-                  rows="2"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              
-              {/* Topic-level resources */}
-              {['pdfs', 'links', 'videos'].map((resourceType) => (
-                <div key={resourceType} className="mb-3">
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Topic {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
-                    </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={item.text}
+                      onChange={(e) => updateModuleResource(moduleIndex, resourceType, resourceIndex, 'text', e.target.value)}
+                      placeholder="Text"
+                      className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                    />
                     <button
-                      onClick={() => addTopicResource(moduleIndex, topicIndex, resourceType)}
-                      className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md text-xs hover:bg-gray-300"
+                      onClick={() => removeModuleResource(moduleIndex, resourceType, resourceIndex)}
+                      className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                      title="Remove resource"
                     >
-                      + Add {resourceType.slice(0, -1)}
+                      <FaRegTrashAlt />
                     </button>
                   </div>
-                  
-                  {(topic[resourceType] || []).map((item, resourceIndex) => (
-                    <div key={resourceIndex} className="mb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
-                      <input
-                        type="text"
-                        value={item.url}
-                        onChange={(e) => updateTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex, 'url', e.target.value)}
-                        placeholder="URL"
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                      <input
-                        type="text"
-                        value={item.text}
-                        onChange={(e) => updateTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex, 'text', e.target.value)}
-                        placeholder="Text"
-                        className="w-full p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-                  ))}
                 </div>
               ))}
             </div>
           ))}
+
+          <div className="mt-6 mb-8 border-t border-gray-200 pt-6">
+            <button
+              onClick={() => addTopic(moduleIndex)}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm flex items-center gap-2 shadow-sm"
+            >
+              <span>Add Topic</span>
+            </button>
+          </div>
+
+          {/* Topics section */}
+          <div className="space-y-6">
+            {module.topics.map((topic, topicIndex) => (
+              <div key={topicIndex} className="ml-4 mb-6 bg-gray-50 rounded-lg border border-gray-200 p-4">
+                <div className="flex justify-between items-center mb-3">
+                  <div className="flex-grow">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="bg-gray-200 px-2 py-1 rounded-md text-sm font-medium text-gray-700">
+                        Topic {topicIndex + 1}
+                      </span>
+                      <button
+                        onClick={() => removeTopic(moduleIndex, topicIndex)}
+                        className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                        title="Remove topic"
+                      >
+                        <FaRegTrashAlt />
+                      </button>
+                    </div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Topic Name:
+                    </label>
+                    <input
+                      type="text"
+                      value={topic.name}
+                      onChange={(e) => updateTopic(moduleIndex, topicIndex, 'name', e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Topic Description:
+                  </label>
+                  <textarea
+                    value={topic.description}
+                    onChange={(e) => updateTopic(moduleIndex, topicIndex, 'description', e.target.value)}
+                    rows="2"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                  />
+                </div>
+                
+                {/* Topic-level resources */}
+                {['pdfs', 'links', 'videos'].map((resourceType) => (
+                  <div key={resourceType} className="mb-3">
+                    <div className="flex justify-between items-center mb-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Topic {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
+                      </label>
+                      <button
+                        onClick={() => addTopicResource(moduleIndex, topicIndex, resourceType)}
+                        className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md text-xs hover:bg-gray-300"
+                      >
+                        + Add {resourceType.slice(0, -1)}
+                      </button>
+                    </div>
+                    
+                    {(topic[resourceType] || []).map((item, resourceIndex) => (
+                      <div key={resourceIndex} className="mb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <input
+                          type="text"
+                          value={item.url}
+                          onChange={(e) => updateTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex, 'url', e.target.value)}
+                          placeholder="URL"
+                          className="w-full p-2 border border-gray-300 rounded-md"
+                        />
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={item.text}
+                            onChange={(e) => updateTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex, 'text', e.target.value)}
+                            placeholder="Text"
+                            className="w-full p-2 border border-gray-300 rounded-md"
+                          />
+                          <button
+                            onClick={() => removeTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex)}
+                            className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                            title="Remove resource"
+                          >
+                            <FaRegTrashAlt />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       ))}
       
