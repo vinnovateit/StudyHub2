@@ -72,9 +72,7 @@ const BranchContent = ({ subjects, branchName, errors }) => {
                         </p>
 
                         <p className="text-gray-600 mt-3 text-sm leading-relaxed flex-grow">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua.
+                          {subject.preview}
                         </p>
 
                         <div className="mt-auto">
