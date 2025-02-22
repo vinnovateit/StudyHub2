@@ -81,24 +81,68 @@ export default async function Page({ params }) {
                 <Modules modules={Course.modules} />
               </div>
 
-              {Course.pdfs.length > 0 && (
-                <div className="mt-6">
-                  <div className={`${ibmPlexMono.className} p-6 rounded-lg`}>
-                    <h3 className="text-lg font-bold uppercase text-black">Materials</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-                      {Course.pdfs.map((pdf) => (
-                        <div className="bg-white p-4 shadow-md rounded-lg hover:bg-blue-300" key={pdf.name}>
-                          <h4 className="text-center font-bold text-gray-800">{pdf.name}</h4>
-                          <iframe
-                            src={pdf.link}
-                            className="w-full h-56 mt-4 border rounded-lg"
-                          ></iframe>
-                        </div>
-                      ))}
+              <div className="mt-6">
+                <div className={`${ibmPlexMono.className} p-6 rounded-lg bg-white shadow-md`}>
+                  <h3 className="text-lg font-bold uppercase text-black mb-4">Course Resources</h3>
+                  
+                  {Course.links.length > 0 && (
+                    <div className="mb-6">
+                      <h4 className="font-bold text-blue-700 mb-2">Important Links</h4>
+                      <div className="grid grid-cols-1 gap-2">
+                        {Course.links.map((link, idx) => (
+                          <a
+                            key={idx}
+                            href={link.url}
+                            className="text-blue-600 hover:underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {link.text}
+                          </a>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {Course.DAs.length > 0 && (
+                    <div className="mb-6">
+                      <h4 className="font-bold text-blue-700 mb-2">Digital Assignments</h4>
+                      <div className="grid grid-cols-1 gap-2">
+                        {Course.DAs.map((da, idx) => (
+                          <a
+                            key={idx}
+                            href={da.url}
+                            className="text-blue-600 hover:underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {da.text}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {Course.videos.length > 0 && (
+                    <div>
+                      <h4 className="font-bold text-blue-700 mb-2">Course Videos</h4>
+                      <div className="grid grid-cols-1 gap-2">
+                        {Course.videos.map((video, idx) => (
+                          <a
+                            key={idx}
+                            href={video.url}
+                            className="text-blue-600 hover:underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {video.text}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </>
           )}
         </div>
