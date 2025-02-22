@@ -10,6 +10,8 @@ export default function EditBranchForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedBranch, setSelectedBranch] = useState('');
+  const [submitMessage, setSubmitMessage] = useState('');
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -49,16 +51,29 @@ export default function EditBranchForm() {
     fetchBranches();
   }, []);
 
-  const handleBranchSelection = (e) => {
+  const handleBranchSelection = async (e) => {
     const selectedBranchName = e.target.value;
     setSelectedBranch(selectedBranchName);
     
-    // Find the selected branch and update the form
-    const branch = branches.find(b => b.name === selectedBranchName);
-    if (branch) {
-      setBranchName(branch.name);
-      setSelectedCourses(branch.courses || []); // Assuming courses are stored in the branch object
-    } else {
+    try {
+      // Fetch branch data including subjects
+      const response = await fetch('/api/branch/', {
+        method: 'POST',
+        body: JSON.stringify({ searchQuery: selectedBranchName }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch branch details');
+      }
+
+      const { props } = await response.json();
+      const { subjects } = props;
+
+      // Update form with branch data
+      setBranchName(selectedBranchName);
+      setSelectedCourses(subjects.map(subject => subject._id));
+    } catch (err) {
+      setError('Error loading branch details. Please try again later.');
       setBranchName('');
       setSelectedCourses([]);
     }
@@ -77,27 +92,67 @@ export default function EditBranchForm() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitMessage('');
+    setSubmitError('');
     
     if (!branchName.trim()) {
-      alert('Please enter a branch name');
+      setSubmitError('Please select a branch');
       return;
     }
 
-    console.log('Branch Name:', branchName);
-    console.log('Selected Courses:', selectedCourses);
+    try {
+      // Get course codes from selected course IDs
+      const selectedCourseCodes = courses
+        .filter(course => selectedCourses.includes(course._id))
+        .map(course => course.code);
 
-    // Reset the form after submission
-    setBranchName('');
-    setSelectedCourses([]);
-    setSelectedBranch('');
+      const response = await fetch('/api/auth/update-branch', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          branchName: branchName,
+          courseCodes: selectedCourseCodes,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update branch');
+      }
+
+      setSubmitMessage('Branch updated successfully!');
+      
+      // Reset form
+      setBranchName('');
+      setSelectedCourses([]);
+      setSelectedBranch('');
+      
+    } catch (err) {
+      setSubmitError(err.message || 'Error updating branch. Please try again.');
+    }
   };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Edit Branch</h1>
       
+      {submitMessage && (
+        <div className="mb-4 p-2 bg-green-100 text-green-700 rounded">
+          {submitMessage}
+        </div>
+      )}
+      
+      {submitError && (
+        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
+          {submitError}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
         <div className="mb-6">
           <label htmlFor="selectBranch" className="block text-sm font-medium text-gray-700 mb-2">
