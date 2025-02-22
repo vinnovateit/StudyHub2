@@ -325,12 +325,12 @@ const CourseForm = ({ courseCode }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-6">{isEditMode ? 'Edit Course' : 'Create New Course'}</h1>
+    <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-md">
+      <h1 className="text-xl font-bold mb-4">{isEditMode ? 'Edit Course' : 'Create New Course'}</h1>
       
-      <div className="space-y-4 mb-6">
+      <div className="space-y-3 mb-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-0.5">
             Name of Course:
           </label>
           <input
@@ -338,12 +338,12 @@ const CourseForm = ({ courseCode }) => {
             name="name"
             value={course.name}
             onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-1.5 border border-gray-300 rounded-md"
           />
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-0.5">
             Course Code:
           </label>
           <input
@@ -351,12 +351,12 @@ const CourseForm = ({ courseCode }) => {
             name="code"
             value={course.code}
             onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-1.5 border border-gray-300 rounded-md"
           />
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-0.5">
             Description:
           </label>
           <textarea
@@ -364,12 +364,12 @@ const CourseForm = ({ courseCode }) => {
             value={course.description}
             onChange={handleInputChange}
             rows="3"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-1.5 border border-gray-300 rounded-md"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-0.5">
             Credits:
           </label>
           <input
@@ -377,12 +377,12 @@ const CourseForm = ({ courseCode }) => {
             name="credits"
             value={course.credits}
             onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-1.5 border border-gray-300 rounded-md"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-0.5">
             Preview:
           </label>
           <textarea
@@ -390,46 +390,46 @@ const CourseForm = ({ courseCode }) => {
             value={course.preview}
             onChange={handleInputChange}
             rows="2"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-1.5 border border-gray-300 rounded-md"
           />
         </div>
       </div>
 
       {/* Course-level resources */}
       {['links', 'videos', 'DAs'].map((resourceType) => (
-        <div key={resourceType} className="mb-6">
+        <div key={resourceType} className="mt-3 p-3 bg-gray-50 rounded-md mb-4">
           <div className="flex justify-between items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
+              Course {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
             </label>
             <button
               onClick={() => addResourceItem(resourceType)}
-              className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md text-xs hover:bg-gray-300"
+              className="px-2 py-1 bg-white border border-gray-300 text-gray-700 rounded-md text-xs hover:bg-gray-50"
             >
               + Add {resourceType.slice(0, -1)}
             </button>
           </div>
           
           {course[resourceType].map((item, index) => (
-            <div key={index} className="mb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div key={index} className="mb-2 grid grid-cols-1 md:grid-cols-2 gap-1">
               <input
                 type="text"
                 value={item.url}
                 onChange={(e) => updateResourceItem(resourceType, index, 'url', e.target.value)}
                 placeholder="URL"
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-1.5 border border-gray-300 rounded-md bg-white"
               />
-              <div className="flex gap-2">
+              <div className="flex gap-1">
                 <input
                   type="text"
                   value={item.text}
                   onChange={(e) => updateResourceItem(resourceType, index, 'text', e.target.value)}
                   placeholder="Text"
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-1.5 border border-gray-300 rounded-md bg-white"
                 />
                 <button
                   onClick={() => removeResourceItem(resourceType, index)}
-                  className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                  className="px-1.5 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
                   title="Remove item"
                 >
                   <FaRegTrashAlt />
@@ -440,51 +440,51 @@ const CourseForm = ({ courseCode }) => {
         </div>
       ))}
 
-      <div className="mb-6">
+      <div className="mb-4">
         <button
           onClick={addModule}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 mr-3"
+          className="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 mr-2 text-sm"
         >
           Add Module
         </button>
       </div>
       
       {course.modules.map((module, moduleIndex) => (
-        <div key={moduleIndex} className="bg-white border-2 border-blue-100 rounded-lg p-6 mb-6 shadow-sm">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="bg-blue-100 px-3 py-1.5 rounded-md text-sm font-medium text-blue-700">
+        <div key={moduleIndex} className="bg-white border border-blue-100 rounded-lg p-4 mb-4 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="bg-blue-100 px-2 py-1 rounded-md text-sm font-medium text-blue-700">
               Module {moduleIndex + 1}
             </span>
             <button
               onClick={() => removeModule(moduleIndex)}
-              className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+              className="px-1.5 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
               title="Remove module"
             >
               <FaRegTrashAlt />
             </button>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-0.5">
                 Module Title:
               </label>
               <input
                 type="text"
                 value={module.title}
                 onChange={(e) => updateModule(moduleIndex, 'title', e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-1.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-0.5">
                 Module Description:
               </label>
               <textarea
                 value={module.description || ''}
                 onChange={(e) => updateModule(moduleIndex, 'description', e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-1.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 rows="2"
               />
             </div>
@@ -492,39 +492,39 @@ const CourseForm = ({ courseCode }) => {
           
           {/* Module-level resources */}
           {['pdfs', 'links', 'videos'].map((resourceType) => (
-            <div key={resourceType} className="mt-4 p-4 bg-gray-50 rounded-md">
+            <div key={resourceType} className="mt-3 p-3 bg-gray-50 rounded-md">
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-sm font-medium text-gray-700">
                   Module {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
                 </label>
                 <button
                   onClick={() => addModuleResource(moduleIndex, resourceType)}
-                  className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 rounded-md text-xs hover:bg-gray-50"
+                  className="px-2 py-1 bg-white border border-gray-300 text-gray-700 rounded-md text-xs hover:bg-gray-50"
                 >
                   + Add {resourceType.slice(0, -1)}
                 </button>
               </div>
               
               {(module[resourceType] || []).map((item, resourceIndex) => (
-                <div key={resourceIndex} className="mb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div key={resourceIndex} className="mb-2 grid grid-cols-1 md:grid-cols-2 gap-1">
                   <input
                     type="text"
                     value={item.url}
                     onChange={(e) => updateModuleResource(moduleIndex, resourceType, resourceIndex, 'url', e.target.value)}
                     placeholder="URL"
-                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                    className="w-full p-1.5 border border-gray-300 rounded-md bg-white"
                   />
-                  <div className="flex gap-2">
+                  <div className="flex gap-1">
                     <input
                       type="text"
                       value={item.text}
                       onChange={(e) => updateModuleResource(moduleIndex, resourceType, resourceIndex, 'text', e.target.value)}
                       placeholder="Text"
-                      className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                      className="w-full p-1.5 border border-gray-300 rounded-md bg-white"
                     />
                     <button
                       onClick={() => removeModuleResource(moduleIndex, resourceType, resourceIndex)}
-                      className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                      className="px-1.5 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
                       title="Remove resource"
                     >
                       <FaRegTrashAlt />
@@ -535,61 +535,61 @@ const CourseForm = ({ courseCode }) => {
             </div>
           ))}
 
-          <div className="mt-6 mb-8 border-t border-gray-200 pt-6">
+          <div className="mt-4 mb-6 border-t border-gray-200 pt-4">
             <button
               onClick={() => addTopic(moduleIndex)}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm flex items-center gap-2 shadow-sm"
+              className="px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm flex items-center gap-2 shadow-sm"
             >
               <span>Add Topic</span>
             </button>
           </div>
 
           {/* Topics section */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {module.topics.map((topic, topicIndex) => (
-              <div key={topicIndex} className="ml-4 mb-6 bg-gray-50 rounded-lg border border-gray-200 p-4">
-                <div className="flex justify-between items-center mb-3">
+              <div key={topicIndex} className="ml-3 mb-4 bg-gray-50 rounded-lg border border-gray-200 p-3">
+                <div className="flex justify-between items-center mb-2">
                   <div className="flex-grow">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-1">
                       <span className="bg-gray-200 px-2 py-1 rounded-md text-sm font-medium text-gray-700">
                         Topic {topicIndex + 1}
                       </span>
                       <button
                         onClick={() => removeTopic(moduleIndex, topicIndex)}
-                        className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                        className="px-1.5 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
                         title="Remove topic"
                       >
                         <FaRegTrashAlt />
                       </button>
                     </div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-0.5">
                       Topic Name:
                     </label>
                     <input
                       type="text"
                       value={topic.name}
                       onChange={(e) => updateTopic(moduleIndex, topicIndex, 'name', e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                      className="w-full p-1.5 border border-gray-300 rounded-md bg-white"
                     />
                   </div>
                 </div>
 
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                <div className="mb-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-0.5">
                     Topic Description:
                   </label>
                   <textarea
                     value={topic.description}
                     onChange={(e) => updateTopic(moduleIndex, topicIndex, 'description', e.target.value)}
                     rows="2"
-                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                    className="w-full p-1.5 border border-gray-300 rounded-md bg-white"
                   />
                 </div>
                 
                 {/* Topic-level resources */}
                 {['pdfs', 'links', 'videos'].map((resourceType) => (
-                  <div key={resourceType} className="mb-3">
-                    <div className="flex justify-between items-center mb-2">
+                  <div key={resourceType} className="mb-2">
+                    <div className="flex justify-between items-center mb-1">
                       <label className="block text-sm font-medium text-gray-700">
                         Topic {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
                       </label>
@@ -602,25 +602,25 @@ const CourseForm = ({ courseCode }) => {
                     </div>
                     
                     {(topic[resourceType] || []).map((item, resourceIndex) => (
-                      <div key={resourceIndex} className="mb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div key={resourceIndex} className="mb-2 grid grid-cols-1 md:grid-cols-2 gap-1">
                         <input
                           type="text"
                           value={item.url}
                           onChange={(e) => updateTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex, 'url', e.target.value)}
                           placeholder="URL"
-                          className="w-full p-2 border border-gray-300 rounded-md"
+                          className="w-full p-1.5 border border-gray-300 rounded-md"
                         />
-                        <div className="flex gap-2">
+                        <div className="flex gap-1">
                           <input
                             type="text"
                             value={item.text}
                             onChange={(e) => updateTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex, 'text', e.target.value)}
                             placeholder="Text"
-                            className="w-full p-2 border border-gray-300 rounded-md"
+                            className="w-full p-1.5 border border-gray-300 rounded-md"
                           />
                           <button
                             onClick={() => removeTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex)}
-                            className="px-2 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                            className="px-1.5 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
                             title="Remove resource"
                           >
                             <FaRegTrashAlt />
@@ -636,15 +636,15 @@ const CourseForm = ({ courseCode }) => {
         </div>
       ))}
       
-      <div className="mt-6 flex space-x-3">
+      <div className="mt-4 flex space-x-2">
         <button
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          className="px-3 py-1.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm"
           onClick={saveCourse}
         >
           {isEditMode ? 'Update Course' : 'Save Course'}
         </button>
         <button
-          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+          className="px-3 py-1.5 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm"
           onClick={clearForm}
         >
           Clear Form
