@@ -16,6 +16,14 @@ export async function POST(req) {
       );
     }
 
+    // Validate branch name is uppercase
+    if (name !== name.toUpperCase()) {
+      return NextResponse.json(
+        { error: "Branch name must be in uppercase letters." },
+        { status: 400 }
+      );
+    }
+
     // Find existing courses by their codes
     const courses = await Course.find({ code: { $in: courseCodes } }).select(
       "_id"
