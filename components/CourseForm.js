@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-const CourseForm = ({ courseId }) => {
+const CourseForm = ({ courseCode }) => {
   const [course, setCourse] = useState({
     name: '',
     code: '',
@@ -15,17 +15,20 @@ const CourseForm = ({ courseId }) => {
     DAs: []
   });
 
-  const isEditMode = Boolean(courseId);
+  const isEditMode = Boolean(courseCode);
 
   // Load existing course data when editing
   useEffect(() => {
     const loadCourse = async () => {
-      if (courseId) {
+      if (courseCode) {
         try {
-          const response = await fetch(`/api/courses/${courseId}`);
+          const response = await fetch(`/api/courses/`, {
+            method: 'POST',
+            body: JSON.stringify({ courseCode }),
+          });
           if (!response.ok) throw new Error('Failed to fetch course');
           const data = await response.json();
-          setCourse(data);
+          setCourse(data.props.Course);
         } catch (error) {
           console.error('Error loading course:', error);
           alert('Failed to load course data');
@@ -34,7 +37,7 @@ const CourseForm = ({ courseId }) => {
     };
 
     loadCourse();
-  }, [courseId]);
+  }, [courseCode]);
 
   // Load from localStorage only when adding new course
   useEffect(() => {

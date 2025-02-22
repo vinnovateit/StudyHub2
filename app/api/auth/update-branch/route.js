@@ -25,42 +25,37 @@ export async function PATCH(req) {
       );
     }
 
-    // Find da ObjectIds
-    const newSubjectIds = await Course.find({ code: { $in: courseCodes } }).select('_id');
-    const newSubjectIdsArray = newSubjectIds.map(subject => subject._id);
+    // Find course ObjectIds
+    const courses = await Course.find({ code: { $in: courseCodes } }).select(
+      "_id"
+    );
+    const courseIds = courses.map((course) => course._id);
 
-    if (newSubjectIdsArray.length !== courseCodes.length) {
-      const foundCodes = await Course.find({ code: { $in: courseCodes } }).select('code');
-      const notFoundCodes = courseCodes.filter(code => 
-        !foundCodes.some(course => course.code === code)
+    if (courseIds.length !== courseCodes.length) {
+      const foundCodes = courses.map((course) => course.code);
+      const notFoundCodes = courseCodes.filter(
+        (code) => !foundCodes.includes(code)
       );
       return NextResponse.json(
-        { 
-          error: "One or more course codes not found.", 
-          notFound: notFoundCodes 
+        {
+          error: "One or more course codes not found.",
+          notFound: notFoundCodes,
         },
         { status: 400 }
       );
     }
 
-    // Combine existing and new subjects 
-    const updatedSubjects = [...new Set([
-      ...existingBranch.subjects.map(id => id.toString()),
-      ...newSubjectIdsArray.map(id => id.toString())
-    ])].map(id => id);
-
-    // Andd update the branch
+    // Update branch with new course IDs
     const updatedBranch = await Branch.findByIdAndUpdate(
       existingBranch._id,
-      { subjects: updatedSubjects },
+      { subjects: courseIds },
       { new: true }
-    ).populate('subjects');
+    ).populate("subjects");
 
     return NextResponse.json(
       { message: "Branch updated successfully", branch: updatedBranch },
       { status: 200 }
     );
-
   } catch (error) {
     console.error("Error updating branch:", error);
     return NextResponse.json(

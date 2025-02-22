@@ -77,7 +77,7 @@ export default async function page({ params }) {
 
                     <div className="mt-auto">
                       <a
-                        href={`/courses/${subject._id}`}
+                        href={`/courses/${subject.code}`}
                         className="block text-center bg-[#007BFF] text-white font-medium rounded-md py-2 hover:bg-[#0056b3] transition"
                       >
                         View more info

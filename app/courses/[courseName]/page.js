@@ -14,16 +14,15 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
-async function getData(s) {
+async function getData(courseCode) {
   const prop = await fetch(`http://localhost:3000/api/courses/`, {
     method: "POST",
-    body: JSON.stringify({ searchQuery: s }),
+    body: JSON.stringify({ courseCode }),
   });
   return prop.json();
 }
 
 export default async function Page({ params }) {
-  let courseName = params.courseName;
   const { props } = await getData(params.courseName);
   const { Course, errors } = props;
 
