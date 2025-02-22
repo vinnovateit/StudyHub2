@@ -1,16 +1,14 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Course from "@/models/Courses";
-import { marked } from "marked";
-import sanitizeHtml from "sanitize-html";
 
-export async function POST(req) {
+export async function PATCH(req) {
   try {
     await connectDB();
 
     const {
-      name,
       code,
+      name,
       credits,
       description,
       preview,
@@ -20,26 +18,22 @@ export async function POST(req) {
       DAs,
     } = await req.json();
 
-    // Check if course already exists
-    const existingCourse = await Course.findOne({ code });
-    if (existingCourse) {
+    if (!code) {
       return NextResponse.json(
-        { error: `A course with code ${code} already exists` },
-        { status: 409 }
-      );
-    }
-
-    if (!name || !code || !credits || !description || !preview) {
-      return NextResponse.json(
-        {
-          error:
-            "Name, code, credits, description and preview are required fields",
-        },
+        { error: "Course code is required" },
         { status: 400 }
       );
     }
 
-    // Helper function to validate URL arrays
+    // Check if course exists...
+    const existingCourse = await Course.findOne({ code });
+    if (!existingCourse) {
+      return NextResponse.json(
+        { error: `Course with code ${code} not found` },
+        { status: 404 }
+      );
+    }
+
     const validateUrls = (urls) => {
       return urls
         ? urls.every(
@@ -60,7 +54,7 @@ export async function POST(req) {
       );
     }
 
-    // Validate modules
+    // Validate modules (if provided)
     if (modules) {
       for (const module of modules) {
         if (!module.title || !module.description) {
@@ -70,7 +64,6 @@ export async function POST(req) {
           );
         }
 
-        // Validate module-level resources
         if (
           !validateUrls(module.pdfs) ||
           !validateUrls(module.links) ||
@@ -82,7 +75,6 @@ export async function POST(req) {
           );
         }
 
-        // Validate topics
         if (module.topics) {
           for (const topic of module.topics) {
             if (!topic.name) {
@@ -92,7 +84,6 @@ export async function POST(req) {
               );
             }
 
-            // Validate topic-level resources
             if (
               !validateUrls(topic.pdfs) ||
               !validateUrls(topic.links) ||
@@ -108,45 +99,46 @@ export async function POST(req) {
       }
     }
 
-    // Process modules
-    const processedModules =
-      modules?.map((module, index) => ({
-        num: index + 1,
-        title: module.title,
-        description: module.description,
-        topics:
-          module.topics?.map((topic) => ({
-            name: topic.name,
-            description: topic.description || "",
-            pdfs: topic.pdfs || [],
-            links: topic.links || [],
-            videos: topic.videos || [],
-          })) || [],
-        pdfs: module.pdfs || [],
-        links: module.links || [],
-        videos: module.videos || [],
-      })) || [];
+    // Process modules (if in req)
+    const processedModules = modules?.map((module, index) => ({
+      num: index + 1,
+      title: module.title,
+      description: module.description,
+      topics:
+        module.topics?.map((topic) => ({
+          name: topic.name,
+          description: topic.description || "",
+          pdfs: topic.pdfs || [],
+          links: topic.links || [],
+          videos: topic.videos || [],
+        })) || [],
+      pdfs: module.pdfs || [],
+      links: module.links || [],
+      videos: module.videos || [],
+    }));
 
-    const newCourse = new Course({
-      name,
-      code,
-      credits,
-      description,
-      preview,
-      modules: processedModules,
-      links: links || [],
-      videos: videos || [],
-      DAs: DAs || [],
+    // Create update object
+    const updateData = {
+      ...(name && { name }),
+      ...(credits && { credits }),
+      ...(description && { description }),
+      ...(preview && { preview }),
+      ...(modules && { modules: processedModules }),
+      ...(links && { links }),
+      ...(videos && { videos }),
+      ...(DAs && { DAs }),
+    };
+
+    const updatedCourse = await Course.findOneAndUpdate({ code }, updateData, {
+      new: true,
     });
 
-    await newCourse.save();
-
     return NextResponse.json(
-      { message: "Course added successfully", course: newCourse },
-      { status: 201 }
+      { message: "Course updated successfully", course: updatedCourse },
+      { status: 200 }
     );
   } catch (error) {
-    console.error("Error adding course:", error);
+    console.error("Error updating course:", error);
     return NextResponse.json(
       { error: "Internal Server Error! Please try again later." },
       { status: 500 }

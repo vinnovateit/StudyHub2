@@ -1,50 +1,45 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import courses from "../../../models/Courses";
 
 export async function POST(req) {
-    const { searchQuery } = await req.json()
+  const { courseCode } = await req.json();
 
-    try{
-        await connectDB();
+  try {
+    await connectDB();
+    const courseData = await courses.findOne({ code: courseCode });
 
-         let errors = null;
-    let courseName= searchQuery;
-
-    if (
-      courseName.length > "603f82d34b48f40004358e53".length ||
-      courseName.length < "603f82d34b48f40004358e53".length
-    ) {
-      errors = "Course not found!";
-
-      return NextResponse.json({
-        props: {
-          errors,
+    if (!courseData) {
+      return NextResponse.json(
+        {
+          props: {
+            errors: "Course not found!",
+          },
         },
-      },{status: 200});
-    } else {
-      const courseData = await courses.findById(courseName);
+        { status: 200 }
+      );
+    }
 
-      if (!courseData || courseData.length === 0) {
-        errors = "Course not found!";
-      }
-
-      return NextResponse.json({
+    return NextResponse.json(
+      {
         props: {
           Course: JSON.parse(JSON.stringify(courseData)),
-          errors: JSON.parse(JSON.stringify(errors)),
+          errors: null,
         },
-      },{status:400});
-    }
+      },
+      { status: 200 }
+    );
   } catch (e) {
     console.log("Error in connecting to DB!", e.message);
-    const errors = "Internal Server Error! Please visit after sometime";
-    return NextResponse.json( {
-      props: {
-        subjects: {},
-        errors: JSON.parse(JSON.stringify(errors)),
+    const errors = "Internal Server Error! Please try again later";
+    return NextResponse.json(
+      {
+        props: {
+          Course: {},
+          errors: JSON.parse(JSON.stringify(errors)),
+        },
       },
-    },{status:400})
-}
-
+      { status: 500 }
+    );
+  }
 }
