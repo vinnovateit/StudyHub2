@@ -1,46 +1,56 @@
-// models/Courses.js
-
 import mongoose from "mongoose";
 
-const CoursesSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const UrlSchema = new mongoose.Schema(
+  {
+    text: { type: String, required: true, trim: true },
+    url: { type: String, required: true, trim: true },
+    order: { type: Number, default: 0 },
+    // future S3 support
+    isS3: { type: Boolean, default: false },
+    key: { type: String },
+    mimetype: { type: String },
   },
-  code: {
-    type: String,
-    required: true,
-  },
-  credits: {
-    type: Number,
-    required: true,
-  },
-  description: {
-    markdown: String,
-    sanitizedHtml: String,
-  },
-  modules: [
-    {
-      num: Number,
-      markdown: String,
-      sanitizedHtml: String,
-    },
-  ],
-  pdfs: [
-    {
-      name: String,
-      link: String,
-    },
-  ],
-  das: [
-    {
-      name: String,
-      link: String,
-    },
-  ],
+  { _id: false }
+);
+
+const TopicSchema = new mongoose.Schema({
+  name: { type: String, required: true, trim: true },
+  description: { type: String, trim: true }, // topic-wise description (optional stuff)
+  // topic resources
+  pdfs: { type: [UrlSchema], default: [] },
+  links: { type: [UrlSchema], default: [] },
+  videos: { type: [UrlSchema], default: [] },
 });
 
+const ModuleSchema = new mongoose.Schema({
+  num: { type: Number, required: true },
+  title: { type: String, required: true, trim: true },
+  description: { type: String, required: true, trim: true },
+  topics: { type: [TopicSchema], required: true, default: [] },
+  // common module resources
+  pdfs: { type: [UrlSchema], default: [] },
+  links: { type: [UrlSchema], default: [] },
+  videos: { type: [UrlSchema], default: [] },
+});
+
+const CourseSchema = new mongoose.Schema(
+  {
+    code: { type: String, required: true, unique: true, trim: true },
+    name: { type: String, required: true, trim: true },
+    credits: { type: Number, required: true, min: 0 },
+    description: { type: String, required: true, trim: true },
+    preview: { type: String, required: true, trim: true }, // shown on course card
+    modules: { type: [ModuleSchema], default: [] },
+    // common course resources (websites, books, etc.)
+    links: { type: [UrlSchema], default: [] },
+    videos: { type: [UrlSchema], default: [] },
+    DAs: { type: [UrlSchema], default: [] },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = mongoose?.models?.courses
   ? mongoose.models.courses
-  : mongoose.model("courses", CoursesSchema);
+  : mongoose.model("courses", CourseSchema);
