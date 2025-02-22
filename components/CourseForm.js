@@ -17,6 +17,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import DraggableResourceItem from './DraggableResourceItem';
+import ModuleTopicResources from './ModuleTopicResources';
 
 const CourseForm = ({ courseCode }) => {
   const [course, setCourse] = useState({
@@ -362,6 +363,32 @@ const CourseForm = ({ courseCode }) => {
     }
   };
 
+  const handleModuleResourceReorder = (moduleIndex, resourceType, oldIndex, newIndex) => {
+    const updatedModules = [...course.modules];
+    if (!updatedModules[moduleIndex][resourceType]) {
+      updatedModules[moduleIndex][resourceType] = [];
+    }
+    updatedModules[moduleIndex][resourceType] = arrayMove(
+      updatedModules[moduleIndex][resourceType],
+      oldIndex,
+      newIndex
+    );
+    setCourse({ ...course, modules: updatedModules });
+  };
+
+  const handleTopicResourceReorder = (moduleIndex, topicIndex, resourceType, oldIndex, newIndex) => {
+    const updatedModules = [...course.modules];
+    if (!updatedModules[moduleIndex].topics[topicIndex][resourceType]) {
+      updatedModules[moduleIndex].topics[topicIndex][resourceType] = [];
+    }
+    updatedModules[moduleIndex].topics[topicIndex][resourceType] = arrayMove(
+      updatedModules[moduleIndex].topics[topicIndex][resourceType],
+      oldIndex,
+      newIndex
+    );
+    setCourse({ ...course, modules: updatedModules });
+  };
+
   const renderResources = (resourceType) => (
     <div key={resourceType} className="mt-3 p-3 bg-gray-50 rounded-md mb-4">
       <div className="flex justify-between items-center mb-2">
@@ -525,47 +552,16 @@ const CourseForm = ({ courseCode }) => {
           
           {/* Module-level resources */}
           {['pdfs', 'links', 'videos'].map((resourceType) => (
-            <div key={resourceType} className="mt-3 p-3 bg-gray-50 rounded-md">
-              <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Module {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
-                </label>
-                <button
-                  onClick={() => addModuleResource(moduleIndex, resourceType)}
-                  className="px-2 py-1 bg-white border border-gray-300 text-gray-700 rounded-md text-xs hover:bg-gray-50"
-                >
-                  + Add {resourceType.slice(0, -1)}
-                </button>
-              </div>
-              
-              {(module[resourceType] || []).map((item, resourceIndex) => (
-                <div key={resourceIndex} className="mb-2 grid grid-cols-1 md:grid-cols-2 gap-1">
-                  <input
-                    type="text"
-                    value={item.url}
-                    onChange={(e) => updateModuleResource(moduleIndex, resourceType, resourceIndex, 'url', e.target.value)}
-                    placeholder="URL"
-                    className="w-full p-1.5 border border-gray-300 rounded-md bg-white"
-                  />
-                  <div className="flex gap-1">
-                    <input
-                      type="text"
-                      value={item.text}
-                      onChange={(e) => updateModuleResource(moduleIndex, resourceType, resourceIndex, 'text', e.target.value)}
-                      placeholder="Text"
-                      className="w-full p-1.5 border border-gray-300 rounded-md bg-white"
-                    />
-                    <button
-                      onClick={() => removeModuleResource(moduleIndex, resourceType, resourceIndex)}
-                      className="px-1.5 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
-                      title="Remove resource"
-                    >
-                      <FaRegTrashAlt />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ModuleTopicResources
+              key={resourceType}
+              title={`Module ${resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}`}
+              resources={module[resourceType] || []}
+              onAdd={() => addModuleResource(moduleIndex, resourceType)}
+              onUpdate={(index, field, value) => updateModuleResource(moduleIndex, resourceType, index, field, value)}
+              onRemove={(index) => removeModuleResource(moduleIndex, resourceType, index)}
+              onReorder={(oldIndex, newIndex) => handleModuleResourceReorder(moduleIndex, resourceType, oldIndex, newIndex)}
+              resourceType={resourceType}
+            />
           ))}
 
           <div className="mt-4 mb-6 border-t border-gray-200 pt-4">
@@ -621,47 +617,17 @@ const CourseForm = ({ courseCode }) => {
                 
                 {/* Topic-level resources */}
                 {['pdfs', 'links', 'videos'].map((resourceType) => (
-                  <div key={resourceType} className="mb-2">
-                    <div className="flex justify-between items-center mb-1">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Topic {resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}:
-                      </label>
-                      <button
-                        onClick={() => addTopicResource(moduleIndex, topicIndex, resourceType)}
-                        className="px-2 py-1 bg-gray-200 text-gray-700 rounded-md text-xs hover:bg-gray-300"
-                      >
-                        + Add {resourceType.slice(0, -1)}
-                      </button>
-                    </div>
-                    
-                    {(topic[resourceType] || []).map((item, resourceIndex) => (
-                      <div key={resourceIndex} className="mb-2 grid grid-cols-1 md:grid-cols-2 gap-1">
-                        <input
-                          type="text"
-                          value={item.url}
-                          onChange={(e) => updateTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex, 'url', e.target.value)}
-                          placeholder="URL"
-                          className="w-full p-1.5 border border-gray-300 rounded-md"
-                        />
-                        <div className="flex gap-1">
-                          <input
-                            type="text"
-                            value={item.text}
-                            onChange={(e) => updateTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex, 'text', e.target.value)}
-                            placeholder="Text"
-                            className="w-full p-1.5 border border-gray-300 rounded-md"
-                          />
-                          <button
-                            onClick={() => removeTopicResource(moduleIndex, topicIndex, resourceType, resourceIndex)}
-                            className="px-1.5 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
-                            title="Remove resource"
-                          >
-                            <FaRegTrashAlt />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <ModuleTopicResources
+                    key={resourceType}
+                    title={`Topic ${resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}`}
+                    resources={topic[resourceType] || []}
+                    onAdd={() => addTopicResource(moduleIndex, topicIndex, resourceType)}
+                    onUpdate={(index, field, value) => updateTopicResource(moduleIndex, topicIndex, resourceType, index, field, value)}
+                    onRemove={(index) => removeTopicResource(moduleIndex, topicIndex, resourceType, index)}
+                    onReorder={(oldIndex, newIndex) => handleTopicResourceReorder(moduleIndex, topicIndex, resourceType, oldIndex, newIndex)}
+                    resourceType={resourceType}
+                    variant="topic"
+                  />
                 ))}
               </div>
             ))}
