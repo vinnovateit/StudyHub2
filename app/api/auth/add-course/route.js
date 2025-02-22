@@ -8,16 +8,16 @@ export async function POST(req) {
   try {
     await connectDB();
 
-    const { 
-      name, 
-      code, 
-      credits, 
-      description, 
+    const {
+      name,
+      code,
+      credits,
+      description,
       preview,
       modules,
       links,
       videos,
-      DAs 
+      DAs,
     } = await req.json();
 
     // Check if course already exists
@@ -31,19 +31,25 @@ export async function POST(req) {
 
     if (!name || !code || !credits || !description || !preview) {
       return NextResponse.json(
-        { error: "Name, code, credits, description and preview are required fields" },
+        {
+          error:
+            "Name, code, credits, description and preview are required fields",
+        },
         { status: 400 }
       );
     }
 
     // Helper function to validate URL arrays
     const validateUrls = (urls) => {
-      return urls ? urls.every(item => 
-        item.text && 
-        item.url && 
-        typeof item.text === 'string' && 
-        typeof item.url === 'string'
-      ) : true;
+      return urls
+        ? urls.every(
+            (item) =>
+              item.text &&
+              item.url &&
+              typeof item.text === "string" &&
+              typeof item.url === "string"
+          )
+        : true;
     };
 
     // Validate course-level resources
@@ -65,7 +71,11 @@ export async function POST(req) {
         }
 
         // Validate module-level resources
-        if (!validateUrls(module.pdfs) || !validateUrls(module.links) || !validateUrls(module.videos)) {
+        if (
+          !validateUrls(module.pdfs) ||
+          !validateUrls(module.links) ||
+          !validateUrls(module.videos)
+        ) {
           return NextResponse.json(
             { error: "Invalid resource format in module" },
             { status: 400 }
@@ -83,7 +93,11 @@ export async function POST(req) {
             }
 
             // Validate topic-level resources
-            if (!validateUrls(topic.pdfs) || !validateUrls(topic.links) || !validateUrls(topic.videos)) {
+            if (
+              !validateUrls(topic.pdfs) ||
+              !validateUrls(topic.links) ||
+              !validateUrls(topic.videos)
+            ) {
               return NextResponse.json(
                 { error: "Invalid resource format in topic" },
                 { status: 400 }
@@ -95,21 +109,23 @@ export async function POST(req) {
     }
 
     // Process modules
-    const processedModules = modules?.map((module, index) => ({
-      num: index + 1,
-      title: module.title,
-      description: module.description,
-      topics: module.topics?.map(topic => ({
-        name: topic.name,
-        description: topic.description || "",
-        pdfs: topic.pdfs || [],
-        links: topic.links || [],
-        videos: topic.videos || []
-      })) || [],
-      pdfs: module.pdfs || [],
-      links: module.links || [],
-      videos: module.videos || []
-    })) || [];
+    const processedModules =
+      modules?.map((module, index) => ({
+        num: index + 1,
+        title: module.title,
+        description: module.description,
+        topics:
+          module.topics?.map((topic) => ({
+            name: topic.name,
+            description: topic.description || "",
+            pdfs: topic.pdfs || [],
+            links: topic.links || [],
+            videos: topic.videos || [],
+          })) || [],
+        pdfs: module.pdfs || [],
+        links: module.links || [],
+        videos: module.videos || [],
+      })) || [];
 
     const newCourse = new Course({
       name,
@@ -120,7 +136,7 @@ export async function POST(req) {
       modules: processedModules,
       links: links || [],
       videos: videos || [],
-      DAs: DAs || []
+      DAs: DAs || [],
     });
 
     await newCourse.save();
