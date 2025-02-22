@@ -35,7 +35,7 @@ const ModuleSchema = new mongoose.Schema({
 
 const CourseSchema = new mongoose.Schema(
   {
-    code: { type: String, required: true, unique: true, trim: true },
+    code: { type: String, required: true, unique: true, trim: true, index: true },
     name: { type: String, required: true, trim: true },
     credits: { type: Number, required: true, min: 0 },
     description: { type: String, required: true, trim: true },
