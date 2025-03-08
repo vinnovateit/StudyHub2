@@ -64,10 +64,12 @@ export default function AddBranchForm() {
         courses.find(c => c._id === courseId)?.code
       ).filter(Boolean);
 
+      const token = localStorage.getItem("token");
       const response = await fetch('/api/auth/add-branch', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           name: branchName,
