@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Course from "@/models/Courses";
+import { verifyToken } from "@/lib/auth";
 
-export async function PATCH(req) {
+async function handler(req) {
   try {
     await connectDB();
 
@@ -145,3 +146,5 @@ export async function PATCH(req) {
     );
   }
 }
+
+export const PATCH = verifyToken(handler);

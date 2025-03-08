@@ -110,10 +110,12 @@ export default function EditBranchForm() {
         .filter(course => selectedCourses.includes(course._id))
         .map(course => course.code);
 
+      const token = localStorage.getItem("token");
       const response = await fetch('/api/auth/update-branch', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           branchName: branchName,

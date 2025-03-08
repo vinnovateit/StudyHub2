@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Branch from "@/models/Branch";
 import Course from "@/models/Courses";
+import { verifyToken } from "@/lib/auth";
 
-export async function POST(req) {
+async function handler(req) {
   try {
     await connectDB();
 
@@ -66,3 +67,5 @@ export async function POST(req) {
     );
   }
 }
+
+export const POST = verifyToken(handler);

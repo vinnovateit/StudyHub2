@@ -261,11 +261,12 @@ const CourseForm = ({ courseCode }) => {
         ? "/api/auth/update-course"
         : "/api/auth/add-course";
       const method = isEditMode ? "PATCH" : "POST";
-
+      const token = localStorage.getItem("token");
       const response = await fetch(endpoint, {
         method,
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(course),
       });
