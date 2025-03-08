@@ -27,7 +27,7 @@ export default async function Page({ params }) {
   const { Course, errors } = props;
 
   return (
-    <div className="break-words bg-[#16171C] text-[#ABCFED]">
+    <div className="break-words bg-[#1E1E1E] text-[#ABCFED]">
       <Head>
         <title>StudyHub | {Course.code}</title>
       </Head>
@@ -36,13 +36,13 @@ export default async function Page({ params }) {
         <div className="max-w-7xl mx-auto p-6 rounded-lg mt-6">
           {errors ? (
             <div className="text-center py-10">
-              <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-[#9FE5FF]">
+              <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-[#ABCFED]">
                 {errors}
               </h1>
             </div>
           ) : (
             <>
-              <div className={`${poppins.className} border-b border-[#9FE5FF] pb-4`}>
+              <div className={`${poppins.className} border-b border-[#ABCFED] pb-4`}>
                 <div className="flex justify-between items-center">
                   <h1 className="text-4xl font-extrabold text-[#ABCFED]">
                     {Course.name} ({Course.code})
@@ -80,7 +80,7 @@ export default async function Page({ params }) {
 
               <div className="flex flex-col items-center mt-6">
                 <div className="w-full max-w-6xl">
-                  <div className={`${ibmPlexMono.className} p-4 mx-auto rounded-lg bg-[#9FE5FF] shadow-md max-w-5xl`}>
+                  <div className={`${ibmPlexMono.className} p-4 mx-auto rounded-lg bg-[#ABCFED] shadow-md max-w-5xl`}>
                     <h3 className="text-lg font-bold uppercase text-black mb-4">Course Resources</h3>
                     
                     {Course.links.length > 0 && (
