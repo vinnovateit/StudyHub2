@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Search } from 'lucide-react';
 
 const PastPapers = () => {
   const router = useRouter();
@@ -127,12 +128,15 @@ const PastPapers = () => {
       <div className="w-full max-w-6xl">
         <h1 className="text-4xl font-bold text-center mb-6 text-blue-300">Past Papers</h1>
         
-        {/* Search Bar - More rounded corners and blue border */}
-        <div className="mb-4 w-full">
+        {/* Search Bar - With the specific color and search icon */}
+        <div className="mb-4 w-full relative">
+          <div className="absolute top-0 bottom-0 left-4 flex items-center">
+            <Search size={20} className="text-black" />
+          </div>
           <input
             type="text"
             placeholder="Search papers by subject, course code, exam type or slot..."
-            className="w-full p-3 rounded-full bg-gray-800 border border-blue-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 pl-12 rounded-full bg-[#9FE5FF] text-black focus:outline-none focus:ring-2 focus:ring-[#9FE5FF]"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -143,7 +147,7 @@ const PastPapers = () => {
           {/* Exam Type Filter */}
           <div className="w-full md:w-auto">
             <select 
-              className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white"
+              className="w-full p-3 rounded-lg bg-gray-800 border border-[#9FE5FF] text-[#9FE5FF]"
               value={filters.examType}
               onChange={(e) => handleFilterChange('examType', e.target.value)}
             >
@@ -157,7 +161,7 @@ const PastPapers = () => {
           {/* Slot Filter */}
           <div className="w-full md:w-auto">
             <select 
-              className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white"
+              className="w-full p-3 rounded-lg bg-gray-800 border border-[#9FE5FF] text-[#9FE5FF]"
               value={filters.slot}
               onChange={(e) => handleFilterChange('slot', e.target.value)}
             >
@@ -169,53 +173,42 @@ const PastPapers = () => {
           </div>
         </div>
         
-        {/* Module Grid - Blue gradient backgrounds */}
+        {/* Module Grid - Using the specific color */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPapers.map((paper, index) => {
-            // Create different gradients for visual variety
-            const gradients = [
-              "bg-gradient-to-br from-blue-500 to-blue-900",
-              "bg-gradient-to-r from-blue-400 to-blue-800",
-              "bg-gradient-to-tr from-blue-600 to-blue-900"
-            ];
-            
-            const gradientClass = gradients[index % gradients.length];
-            
-            return (
-              <div 
-                key={paper.id} 
-                className={`${gradientClass} rounded-lg overflow-hidden flex flex-col justify-between bg-opacity-20`}
-              >
-                {/* Paper Preview Image */}
-                <div className="relative h-40 w-full overflow-hidden">
-                  <img 
-                    src={paper.imageUrl} 
-                    alt={`Preview of ${paper.subject}`}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-20"></div>
+          {filteredPapers.map((paper) => (
+            <div 
+              key={paper.id} 
+              className="bg-[#9FE5FF] rounded-lg overflow-hidden flex flex-col justify-between"
+            >
+              {/* Paper Preview Image */}
+              <div className="relative h-40 w-full overflow-hidden">
+                <img 
+                  src={paper.imageUrl} 
+                  alt={`Preview of ${paper.subject}`}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-20"></div>
+              </div>
+              
+              <div className="p-4">
+                <h3 className="text-black font-bold text-lg mb-1">{paper.subject}</h3>
+                
+                <div className="text-sm mb-4 text-black">
+                  <div><span className="font-medium">Course Code:</span> {paper.courseCode}</div>
+                  <div><span className=" font-medium">Exam Type:</span> {paper.examType}</div>
+                  <div><span className=" font-medium">Slot:</span> {paper.slot}</div>
+                  <div><span className=" font-medium">Semester:</span> {paper.semester} {paper.year}</div>
                 </div>
                 
-                <div className="p-4">
-                  <h3 className="font-bold text-lg mb-1">{paper.subject}</h3>
-                  
-                  <div className="text-sm mb-4">
-                    <div><span className="text-blue-200 font-medium">Course Code:</span> {paper.courseCode}</div>
-                    <div><span className="text-blue-200 font-medium">Exam Type:</span> {paper.examType}</div>
-                    <div><span className="text-blue-200 font-medium">Slot:</span> {paper.slot}</div>
-                    <div><span className="text-blue-200 font-medium">Semester:</span> {paper.semester} {paper.year}</div>
-                  </div>
-                  
-                  <button 
-                    className="bg-white text-blue-800 hover:bg-blue-100 py-2 px-4 rounded-md text-sm self-start transition-colors duration-200 font-medium"
-                    onClick={() => handleViewPaper(paper.paperCode)}
-                  >
-                    View Paper
-                  </button>
-                </div>
+                <button 
+                  className="bg-blue-700 text-white font-bold hover:bg-opacity-80 py-2 px-4 rounded-md text-sm self-start transition-colors duration-200"
+                  onClick={() => handleViewPaper(paper.paperCode)}
+                >
+                  View Paper
+                </button>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
         
         {filteredPapers.length === 0 && (
@@ -225,18 +218,6 @@ const PastPapers = () => {
         )}
       </div>
       
-      {/* Decorative Dots (Right side like in the image) */}
-      <div className="hidden lg:block absolute right-4 top-1/2 transform -translate-y-1/2">
-        <div className="flex flex-col gap-1">
-          {[...Array(10)].map((_, i) => (
-            <div key={i} className="flex gap-1">
-              {[...Array(3)].map((_, j) => (
-                <div key={j} className="w-1 h-1 bg-gray-600 rounded-full"></div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
