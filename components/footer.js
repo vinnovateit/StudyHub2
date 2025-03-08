@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="flex justify-between items-center w-full px-8 text-[#93c5fd] bg-[#0d1321] py-4 pt-2 border-t border-[#93c5fd]">
+    <footer className="flex justify-between items-center w-full px-8 text-[#93c5fd] bg-[#1E1E1E] py-4 pt-2 border-t border-[#93c5fd]">
       {/* VinnovateIT Logo */}
       <div className="flex items-center">
         <Image

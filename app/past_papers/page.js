@@ -124,9 +124,10 @@ const PastPapers = () => {
   });
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-900 text-white p-6">
+    <div className="flex flex-col items-center min-h-screen bg-[#1E1E1E] text-white p-6">
       <div className="w-full max-w-6xl">
-        <h1 className="text-4xl font-bold text-center mb-6 text-blue-300">Past Papers</h1>
+        {/* Updated header with Poppins font */}
+        <h1 className="text-4xl font-bold text-center mb-6 text-blue-300 font-poppins">Past Papers</h1>
         
         {/* Search Bar - With the specific color and search icon */}
         <div className="mb-4 w-full relative">
@@ -147,7 +148,7 @@ const PastPapers = () => {
           {/* Exam Type Filter */}
           <div className="w-full md:w-auto">
             <select 
-              className="w-full p-3 rounded-lg bg-gray-800 border border-[#9FE5FF] text-[#9FE5FF]"
+              className="w-full p-3 rounded-lg bg-[#1E1E1E] border border-[#9FE5FF] text-[#9FE5FF]"
               value={filters.examType}
               onChange={(e) => handleFilterChange('examType', e.target.value)}
             >
@@ -161,7 +162,7 @@ const PastPapers = () => {
           {/* Slot Filter */}
           <div className="w-full md:w-auto">
             <select 
-              className="w-full p-3 rounded-lg bg-gray-800 border border-[#9FE5FF] text-[#9FE5FF]"
+              className="w-full p-3 rounded-lg bg-[#1E1E1E] border border-[#9FE5FF] text-[#9FE5FF]"
               value={filters.slot}
               onChange={(e) => handleFilterChange('slot', e.target.value)}
             >
@@ -173,12 +174,12 @@ const PastPapers = () => {
           </div>
         </div>
         
-        {/* Module Grid - Using the specific color */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Module Grid - Using the specific color with smaller width boxes and centered content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
           {filteredPapers.map((paper) => (
             <div 
               key={paper.id} 
-              className="bg-[#9FE5FF] rounded-lg overflow-hidden flex flex-col justify-between"
+              className="bg-[#9FE5FF] rounded-lg overflow-hidden flex flex-col justify-between w-full max-w-xs"
             >
               {/* Paper Preview Image */}
               <div className="relative h-40 w-full overflow-hidden">
@@ -191,21 +192,26 @@ const PastPapers = () => {
               </div>
               
               <div className="p-4">
+                {/* Subject title remains in default font */}
                 <h3 className="text-black font-bold text-lg mb-1">{paper.subject}</h3>
                 
-                <div className="text-sm mb-4 text-black">
+                {/* Content now using IBM Plex Mono font */}
+                <div className="text-sm mb-4 text-black font-ibm-plex-mono">
                   <div><span className="font-medium">Course Code:</span> {paper.courseCode}</div>
-                  <div><span className=" font-medium">Exam Type:</span> {paper.examType}</div>
-                  <div><span className=" font-medium">Slot:</span> {paper.slot}</div>
-                  <div><span className=" font-medium">Semester:</span> {paper.semester} {paper.year}</div>
+                  <div><span className="font-medium">Exam Type:</span> {paper.examType}</div>
+                  <div><span className="font-medium">Slot:</span> {paper.slot}</div>
+                  <div><span className="font-medium">Semester:</span> {paper.semester} {paper.year}</div>
                 </div>
                 
-                <button 
-                  className="bg-blue-700 text-white font-bold hover:bg-opacity-80 py-2 px-4 rounded-md text-sm self-start transition-colors duration-200"
-                  onClick={() => handleViewPaper(paper.paperCode)}
-                >
-                  View Paper
-                </button>
+                {/* Centered button */}
+                <div className="flex justify-center w-full">
+                  <button 
+                    className="bg-blue-700 text-white font-bold hover:bg-opacity-80 py-2 px-4 rounded-md text-sm transition-colors duration-200"
+                    onClick={() => handleViewPaper(paper.paperCode)}
+                  >
+                    View Paper
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -218,6 +224,19 @@ const PastPapers = () => {
         )}
       </div>
       
+      {/* Font imports - add this to your head section or global CSS */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+        
+        .font-poppins {
+          font-family: 'Poppins', sans-serif;
+        }
+        
+        .font-ibm-plex-mono {
+          font-family: 'IBM Plex Mono', monospace;
+        }
+      `}</style>
     </div>
   );
 };
