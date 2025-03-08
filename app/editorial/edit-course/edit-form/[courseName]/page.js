@@ -2,10 +2,9 @@ import CourseForm from "@/components/CourseForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default function AddCourse() {
+export default function EditCoursePage({ params }) {
   return (
     <div className="flex flex-col min-h-screen p-6">
-      {/* <h1 className="text-4xl font-bold mb-4">Add Course Form</h1> */}
       <div className="max-w-lg mb-4">
         <Link
           href="/editorial/edit-hub"
@@ -16,7 +15,7 @@ export default function AddCourse() {
         </Link>
       </div>
       <div className="flex-grow">
-        <CourseForm />
+        <CourseForm courseCode={params.courseName} />
       </div>
     </div>
   );

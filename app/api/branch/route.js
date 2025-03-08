@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import branch from "../../../models/Branch";
-
+// NOTE: Do NOT remove unless you are sure what you are doing
+// Yes, your IDE is right & the import is technically unused,
+// but it is required for the schema to be registered
+// Also yes, it should be done in a better way later (TODO:fixme)
+import courses from "../../../models/Courses";
 
 export async function POST(req) {
     const { searchQuery } = await req.json()

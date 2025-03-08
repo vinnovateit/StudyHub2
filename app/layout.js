@@ -1,10 +1,23 @@
-import { Poppins } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script';
 import { Fragment } from 'react';
 import NextHead from 'next/head';
 import NAVBAR from "../components/navbar"
 import FOOTER from "../components/footer"
+import { Poppins, IBM_Plex_Mono } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-poppins",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["100"],
+  variable: "--font-ibm-plex-mono",
+});
+
 
 export const metadata = {
   title: "StudyHub by VinnovateIT",
@@ -79,10 +92,12 @@ export default function RootLayout({ children }) {
 
         </NextHead>
       </Fragment>
-      <body>
-        <NAVBAR></NAVBAR>
-        {children}
-        <FOOTER></FOOTER>
+      <body className={`${poppins.variable} ${ibmPlexMono.variable} bg-gradient-to-br from-white to-blue-100 min-h-screen flex flex-col`}>
+        <NAVBAR />
+        <main className="flex-grow flex flex-col">
+          {children}
+        </main>
+        <FOOTER />
         <Script
           src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
           strategy="beforeInteractive"
@@ -96,7 +111,7 @@ export default function RootLayout({ children }) {
           src="https://kit.fontawesome.com/695fbc93f3.js"
           crossOrigin="anonymous"
         />
-        <Script rel="preload" strategy="beforeInteractive" src="https://unpkg.com/css-doodle@0.14.2/css-doodle.min.js" />  
+          
       </body>
     </html>
   );
