@@ -92,10 +92,12 @@ export default function RootLayout({ children }) {
 
         </NextHead>
       </Fragment>
-      <body className={`${poppins.variable} ${ibmPlexMono.variable} bg-gradient-to-br from-white to-blue-100`}>
-        <NAVBAR></NAVBAR>
-        {children}
-        <FOOTER></FOOTER>
+      <body className={`${poppins.variable} ${ibmPlexMono.variable} bg-gradient-to-br from-white to-blue-100 min-h-screen flex flex-col`}>
+        <NAVBAR />
+        <main className="flex-grow flex flex-col">
+          {children}
+        </main>
+        <FOOTER />
         <Script
           src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
           strategy="beforeInteractive"

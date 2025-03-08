@@ -16,6 +16,18 @@ const poppins = Poppins({
 const BranchContent = ({ subjects, branchName, errors }) => {
   const [searchText, setSearchText] = useState("");
 
+  if (!subjects || !Array.isArray(subjects)) {
+    return (
+      <div className={`${ibmPlexMono.className} min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white to-blue-100`}>
+        <div className="p-6 w-full flex flex-col items-center">
+          <h1 className="text-center mb-3 text-red-600 font-bold text-xl">
+            No courses found for {branchName}
+          </h1>
+        </div>
+      </div>
+    );
+  }
+
   const filteredSubjects = subjects.filter(subject => {
     const searchQuery = searchText.toLowerCase();
     return (
@@ -72,14 +84,12 @@ const BranchContent = ({ subjects, branchName, errors }) => {
                         </p>
 
                         <p className="text-gray-600 mt-3 text-sm leading-relaxed flex-grow">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua.
+                          {subject.preview}
                         </p>
 
                         <div className="mt-auto">
                           <a
-                            href={`/courses/${subject._id}`}
+                            href={`/courses/${subject.code}`}
                             className="block text-center bg-[#007BFF] text-white font-medium rounded-md py-2 hover:bg-[#0056b3] transition"
                           >
                             View more info

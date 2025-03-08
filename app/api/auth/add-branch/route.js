@@ -1,64 +1,71 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Branch from "@/models/Branch";
-import Course from "@/models/Courses";  
+import Course from "@/models/Courses";
+import { verifyToken } from "@/lib/auth";
 
-export async function POST(req) {
+async function handler(req) {
   try {
-    // Connect to the database
-    console.log("Attempting to connect to the database...");
     await connectDB();
 
-    // Parse the request body
-    const { name, school, subjects } = await req.json();
-    console.log("Received data:", { name, school, subjects });
+    const { name, school, courseCodes } = await req.json();
 
-    // Validate required fields
-    if (!name || !school) {
-      console.error("Missing required fields:", { name, school });
+    if (!name || !school || !courseCodes || !Array.isArray(courseCodes)) {
       return NextResponse.json(
-        { error: "Branch name and school are required." },
+        { error: "Branch name, school, and course codes array are required." },
         { status: 400 }
       );
     }
 
-    // Lookup subject ObjectIds from the courses collection
-    const subjectIds = await Course.find({ name: { $in: subjects } }).select('_id');
-    const subjectIdsArray = subjectIds.map(subject => subject._id);
-
-    // Check if any subjects were found
-    if (subjectIdsArray.length !== subjects.length) {
-      console.error("Some subjects were not found:", subjects);
+    // Validate branch name is uppercase
+    if (name !== name.toUpperCase()) {
       return NextResponse.json(
-        { error: "One or more subjects not found." },
+        { error: "Branch name must be in uppercase letters." },
         { status: 400 }
       );
     }
 
-    // Create a new branch with subject ObjectIds
+    // Find existing courses by their codes
+    const courses = await Course.find({ code: { $in: courseCodes } }).select(
+      "_id"
+    );
+    const courseIds = courses.map((course) => course._id);
+
+    if (courseIds.length !== courseCodes.length) {
+      const foundCodes = courses.map((course) => course.code);
+      const notFoundCodes = courseCodes.filter(
+        (code) => !foundCodes.includes(code)
+      );
+      return NextResponse.json(
+        {
+          error: "One or more course codes not found.",
+          notFound: notFoundCodes,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Create new branch with the course IDs
     const newBranch = new Branch({
       name,
       school,
-      subjects: subjectIdsArray,
+      subjects: courseIds,
     });
 
-    // Save the new branch to the database
     await newBranch.save();
     console.log("New branch added:", newBranch);
 
-    // Return a success response
     return NextResponse.json(
       { message: "Branch added successfully", branch: newBranch },
       { status: 201 }
     );
   } catch (error) {
-    // Log the error for debugging
-    console.error("Error in backend:", error);
-
-    // Return the error message
+    console.error("Error adding branch:", error);
     return NextResponse.json(
       { error: "Internal Server Error! Please try again later." },
       { status: 500 }
     );
   }
 }
+
+export const POST = verifyToken(handler);

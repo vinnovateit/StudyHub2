@@ -70,7 +70,7 @@ export default function ChooseCourse() {
             {filteredCourses.length > 0 ? (
               filteredCourses.map((course) => (
                 <div
-                  key={course._id}
+                  key={course.code}
                   className="relative bg-gray-800 rounded-xl border border-gray-700 w-[310px] h-[200px] text-sm p-6 flex flex-col"
                 >
                   <h4 className="font-extrabold text-lg text-white">
@@ -83,7 +83,7 @@ export default function ChooseCourse() {
                   
                   <div className="mt-auto">
                     <a
-                      href={`edit-course/edit-form/${course._id}`}
+                      href={`edit-course/edit-form/${course.code}`}
                       className="block text-center bg-blue-600 text-white font-medium rounded-md py-2 hover:bg-blue-700 transition"
                     >
                       Edit
