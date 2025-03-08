@@ -26,7 +26,7 @@ export default function Home() {
         {/* Image Section */}
         <div className="image-section flex-1 flex items-center justify-center">
           <Image
-            src="/img/studyguide.png"
+            src="/img/allnighter_img.svg"
             alt="Illustration"
             width={500}
             height={400}
