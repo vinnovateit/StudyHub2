@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, GitBranch, Edit, LogOut, Settings } from "lucide-react";
+import { BookOpen, GitBranch, Edit, LogOut, Settings , Newspaper} from "lucide-react";
 import { Poppins, IBM_Plex_Mono } from "next/font/google";
 
 const poppins = Poppins({
@@ -34,6 +34,25 @@ export default function EditorialHub() {
   if (!isAuthenticated) return null;
 
   const menuItems = [
+    
+    {
+      title: "Add Course",
+      icon: <BookOpen className="h-8 w-8" />,
+      href: "/editorial/add-course",
+      description: "Add new courses to the curriculum",
+    },
+    {
+      title: "Add Papers",
+      icon: <Newspaper className="h-8 w-8" />,
+      href: "/editorial/add-papers",
+      description: "Add Exam Papers",
+    },
+    {
+      title: "Edit Course",
+      icon: <Edit className="h-8 w-8" />,
+      href: "/editorial/edit-course",
+      description: "Modify existing course content and settings",
+    },
     {
       title: "Add Branch",
       icon: <GitBranch className="h-8 w-8" />,
@@ -46,18 +65,7 @@ export default function EditorialHub() {
       href: "/editorial/edit-branch",
       description: "Modify existing branch settings and structure",
     },
-    {
-      title: "Add Course",
-      icon: <BookOpen className="h-8 w-8" />,
-      href: "/editorial/add-course",
-      description: "Add new courses to the curriculum",
-    },
-    {
-      title: "Edit Course",
-      icon: <Edit className="h-8 w-8" />,
-      href: "/editorial/edit-course",
-      description: "Modify existing course content and settings",
-    },
+    
   ];
 
   return (
