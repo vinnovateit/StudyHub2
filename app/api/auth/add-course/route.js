@@ -3,8 +3,9 @@ import connectDB from "@/lib/connectDB";
 import Course from "@/models/Courses";
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
+import { verifyToken } from "@/lib/auth";
 
-export async function POST(req) {
+async function handler(req) {
   try {
     await connectDB();
 
@@ -153,3 +154,5 @@ export async function POST(req) {
     );
   }
 }
+
+export const POST = verifyToken(handler);

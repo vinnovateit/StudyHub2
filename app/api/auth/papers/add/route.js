@@ -2,19 +2,10 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Paper from "@/models/Paper";
 import Course from "@/models/Courses";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
+import { verifyToken } from "@/lib/auth";
 
-export async function POST(req) {
+async function handler(req) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json(
-        { error: "Unauthorized access" },
-        { status: 401 }
-      );
-    }
-
     await connectDB();
     const paperData = await req.json();
     
@@ -42,3 +33,5 @@ export async function POST(req) {
     );
   }
 }
+
+export const POST = verifyToken(handler);

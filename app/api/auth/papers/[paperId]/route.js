@@ -1,20 +1,11 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Paper from "@/models/Paper";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
+import { verifyToken } from "@/lib/auth";
 
 // Update paper
-export async function PATCH(req, { params }) {
+async function patchHandler(req, { params }) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json(
-        { error: "Unauthorized access" },
-        { status: 401 }
-      );
-    }
-
     await connectDB();
     const updates = await req.json();
     
@@ -45,16 +36,8 @@ export async function PATCH(req, { params }) {
 }
 
 // Delete paper
-export async function DELETE(req, { params }) {
+async function deleteHandler(req, { params }) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json(
-        { error: "Unauthorized access" },
-        { status: 401 }
-      );
-    }
-
     await connectDB();
     const paper = await Paper.findByIdAndDelete(params.paperId);
     
@@ -76,3 +59,6 @@ export async function DELETE(req, { params }) {
     );
   }
 }
+
+export const PATCH = verifyToken((req, ctx) => patchHandler(req, ctx));
+export const DELETE = verifyToken((req, ctx) => deleteHandler(req, ctx));
