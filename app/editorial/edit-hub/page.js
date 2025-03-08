@@ -62,7 +62,7 @@ export default function EditorialHub() {
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-b from-white via-[#C3ECFF] to-[#9FE5FF] ${poppins.variable}`}
+      className={`min-h-screen ${poppins.variable}`}
     >
       {/* Header with Logout */}
       <div className="backdrop-blur-sm">

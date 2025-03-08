@@ -70,14 +70,12 @@ export default async function page({ params }) {
                     </p>
 
                     <p className="text-gray-600 mt-3 text-sm leading-relaxed flex-grow">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
+                      {subject.preview}
                     </p>
 
                     <div className="mt-auto">
                       <a
-                        href={`/courses/${subject._id}`}
+                        href={`/courses/${subject.code}`}
                         className="block text-center bg-[#007BFF] text-white font-medium rounded-md py-2 hover:bg-[#0056b3] transition"
                       >
                         View more info

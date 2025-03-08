@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
-const SECRET_KEY = process.env.JWT_SECRET || "your-secret-key"; // Use a strong secret key
+const SECRET_KEY = process.env.JWT_SECRET;
 
 export async function POST(req) {
   const { username, password } = await req.json();
