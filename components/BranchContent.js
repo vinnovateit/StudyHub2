@@ -66,7 +66,7 @@ const BranchContent = ({ subjects, branchName, errors }) => {
                   subject && (
                     <div
                       key={subject.code}
-                      className="relative bg-[#9FE5FF] rounded-xl border border-[#16171C] w-[310px] h-[360px] text-sm p-6 flex flex-col"
+                      className="relative bg-[#ABCFED] rounded-xl border border-[#16171C] w-[310px] h-[360px] text-sm p-6 flex flex-col"
                     >
                       <h4 className="font-extrabold text-lg text-[#16171C]">
                         {subject.name}

@@ -68,12 +68,12 @@ export function Modules({ modules }) {
           className="rounded-mb w-full align-center mb-4"
         >
           <AccordionHeader
-            className="p-4 bg-[#16171C] text-white text-sm md:text-md uppercase tracking-wide hover:bg-[#ABCFED] border-b border-[#9FE5FF] transition-all"
+            className="p-4 bg-[#1E1E1E] text-white text-sm md:text-md uppercase tracking-wide hover:bg-[#16171C] border-b border-[#9FE5FF] transition-all"
             onClick={() => handleOpen(module.num)}
           >
             MODULE {module.num}
           </AccordionHeader>
-          <AccordionBody className="bg-gradient-to-br from-[#9FE5FF] to-[#ABCFED] text-black">
+          <AccordionBody className="bg-[#ABCFED] text-black">
             <div className="relative overflow-hidden p-6 text-base">
               <h3 className="font-bold text-xl mb-2">{module.title}</h3>
               <p className="mb-4">{module.description}</p>
