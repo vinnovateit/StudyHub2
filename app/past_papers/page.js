@@ -137,7 +137,7 @@ const PastPapers = () => {
           <input
             type="text"
             placeholder="Search papers by subject, course code, exam type or slot..."
-            className="w-full p-3 pl-12 rounded-full bg-[#9FE5FF] text-black focus:outline-none focus:ring-2 focus:ring-[#9FE5FF]"
+            className="w-full p-3 pl-12 rounded-full bg-[#ABCFED] text-black focus:outline-none focus:ring-2 focus:ring-[#ABCFED]"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -148,7 +148,7 @@ const PastPapers = () => {
           {/* Exam Type Filter */}
           <div className="w-full md:w-auto">
             <select 
-              className="w-full p-3 rounded-lg bg-[#1E1E1E] border border-[#9FE5FF] text-[#9FE5FF]"
+              className="w-full p-3 rounded-lg bg-[#1E1E1E] border border-[#ABCFED] text-[#ABCFED]"
               value={filters.examType}
               onChange={(e) => handleFilterChange('examType', e.target.value)}
             >
@@ -162,7 +162,7 @@ const PastPapers = () => {
           {/* Slot Filter */}
           <div className="w-full md:w-auto">
             <select 
-              className="w-full p-3 rounded-lg bg-[#1E1E1E] border border-[#9FE5FF] text-[#9FE5FF]"
+              className="w-full p-3 rounded-lg bg-[#1E1E1E] border border-[#ABCFED] text-[#ABCFED]"
               value={filters.slot}
               onChange={(e) => handleFilterChange('slot', e.target.value)}
             >
@@ -179,7 +179,7 @@ const PastPapers = () => {
           {filteredPapers.map((paper) => (
             <div 
               key={paper.id} 
-              className="bg-[#9FE5FF] rounded-lg overflow-hidden flex flex-col justify-between w-full max-w-xs"
+              className="bg-[#ABCFED] rounded-lg overflow-hidden flex flex-col justify-between w-full max-w-xs"
             >
               {/* Paper Preview Image */}
               <div className="relative h-40 w-full overflow-hidden">

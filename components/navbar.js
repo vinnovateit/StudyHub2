@@ -70,26 +70,22 @@ const Navbar = () => {
             </Link>
 
             {/* Desktop search bar */}
-            <div className="hidden sm:flex items-center ml-4">
+            <div className="hidden sm:flex items-center relative ml-4">
               <input
                 type="text"
-                className="form-control search-input border border-gray-600 rounded-l-md px-3 py-2
-                          text-sm w-48 bg-[#1E1E1E] text-[#93c5fd]"
+                className="form-control search-input border border-gray-600 rounded-md px-3 py-2
+                          text-sm w-48 bg-[#1E1E1E] text-[#93c5fd] pr-8"
                 placeholder="Search Course"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 onKeyPress={handleKeyPress}
               />
-              <button
-                type="button"
-                className="flex items-center justify-center transition-colors text-[#1E1E1E]
-                          bg-[#93c5fd] border border-[#93c5fd]
-                          rounded-r-md px-4 py-2 text-md
-                          hover:bg-[#60a5fa]"
+              <div 
+                className="absolute right-2 cursor-pointer text-[#93c5fd] hover:text-[#60a5fa]"
                 onClick={handleSearch}
               >
                 <i className="fas fa-search"></i>
-              </button>
+              </div>
             </div>
 
             {/* Mobile search button */}
@@ -113,27 +109,23 @@ const Navbar = () => {
                       transition-all duration-300 ease-in-out overflow-hidden
                       ${showInput ? 'max-h-16 opacity-100' : 'max-h-0 opacity-0'}`}
         >
-          <div className="flex items-center">
+          <div className="flex items-center relative">
             <input
               type="text"
-              className="form-control search-input border border-gray-600 rounded-l-md px-3 py-2
-                        text-sm flex-grow bg-[#1E1E1E] text-[#93c5fd]"
+              className="form-control search-input border border-gray-600 rounded-md px-3 py-2
+                        text-sm w-full bg-[#1E1E1E] text-[#93c5fd] pr-8"
               placeholder="Search Course"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               onKeyPress={handleKeyPress}
               autoFocus={showInput}
             />
-            <button
-              type="button"
-              className="flex items-center justify-center transition-colors text-[#1E1E1E]
-                        bg-[#93c5fd] border border-[#93c5fd]
-                        rounded-r-md px-4 py-2 text-md
-                        hover:bg-[#60a5fa]"
+            <div 
+              className="absolute right-2 cursor-pointer text-[#93c5fd] hover:text-[#60a5fa]"
               onClick={handleSearch}
             >
               <i className="fas fa-search"></i>
-            </button>
+            </div>
           </div>
         </div>
       </div>
