@@ -1,25 +1,20 @@
 "use client";
 
-import { FaSearch } from "react-icons/fa";
+import { Search } from "lucide-react";
 
 export default function SearchBar({ searchText, setSearchText }) {
   return (
-    <div className="flex justify-center mb-6 w-full max-w-md">
-      <input
-        type="text"
-        placeholder="Search Course"
-        aria-label="Search"
-        name="query"
-        id="autoCourse"
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-        className="border rounded-lg px-4 py-2 w-full bg-[#ABCFED] text-[#16171C] placeholder-[#16171C] focus:outline-none focus:ring-2 focus:ring-[#007BFF]"
-      />
-      <button
-        className="bg-[#007BFF] text-white px-4 py-2 rounded-lg ml-2 hover:bg-[#0056b3] transition"
-      >
-        <FaSearch />
-      </button>
-    </div>
+   <div className="mb-4 w-full relative">
+          <div className="absolute top-0 bottom-0 left-4 flex items-center">
+            <Search size={20} className="text-black" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search subjects..."
+            className="w-full p-3 pl-12 rounded-full bg-[#ABCFED] text-black focus:outline-none focus:ring-2 focus:ring-[#ABCFED]"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        </div>
   );
 }
