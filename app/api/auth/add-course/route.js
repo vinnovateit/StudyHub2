@@ -63,8 +63,8 @@ async function handler(req) {
 
     // Validate modules
     if (modules) {
-      for (const module of modules) {
-        if (!module.title || !module.description) {
+      for (const m of modules) {
+        if (!m.title || !m.description) {
           return NextResponse.json(
             { error: "Each module must have a title and description" },
             { status: 400 }
@@ -73,9 +73,9 @@ async function handler(req) {
 
         // Validate module-level resources
         if (
-          !validateUrls(module.pdfs) ||
-          !validateUrls(module.links) ||
-          !validateUrls(module.videos)
+          !validateUrls(m.pdfs) ||
+          !validateUrls(m.links) ||
+          !validateUrls(m.videos)
         ) {
           return NextResponse.json(
             { error: "Invalid resource format in module" },
@@ -84,8 +84,8 @@ async function handler(req) {
         }
 
         // Validate topics
-        if (module.topics) {
-          for (const topic of module.topics) {
+        if (m.topics) {
+          for (const topic of m.topics) {
             if (!topic.name) {
               return NextResponse.json(
                 { error: "Each topic must have a name" },
@@ -111,21 +111,21 @@ async function handler(req) {
 
     // Process modules
     const processedModules =
-      modules?.map((module, index) => ({
+      modules?.map((m, index) => ({
         num: index + 1,
-        title: module.title,
-        description: module.description,
+        title: m.title,
+        description: m.description,
         topics:
-          module.topics?.map((topic) => ({
+          m.topics?.map((topic) => ({
             name: topic.name,
             description: topic.description || "",
             pdfs: topic.pdfs || [],
             links: topic.links || [],
             videos: topic.videos || [],
           })) || [],
-        pdfs: module.pdfs || [],
-        links: module.links || [],
-        videos: module.videos || [],
+        pdfs: m.pdfs || [],
+        links: m.links || [],
+        videos: m.videos || [],
       })) || [];
 
     const newCourse = new Course({
