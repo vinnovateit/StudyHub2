@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 async function getData(courseCode) {
-  const prop = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/courses/`, {
+  const prop = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/courses/`, {
     method: "POST",
     body: JSON.stringify({ courseCode }),
   });

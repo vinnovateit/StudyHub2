@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
 }
 
 async function getData(s) {
-  const prop = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/branch/`, {
+  const prop = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/branch/`, {
     method: "POST",
     body: JSON.stringify({ searchQuery: s }),
   });

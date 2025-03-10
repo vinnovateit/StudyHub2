@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 async function getData(s) {
-  const prop = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/search/`, {
+  const prop = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search/`, {
     method: "POST",
     body: JSON.stringify({ searchQuery: s }),
   });
