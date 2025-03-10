@@ -63,11 +63,11 @@ const Navbar = () => {
           {/* Right-Side Elements */}
           <div className="flex items-center space-x-3">
             {/* Papers Link - visible on all screens */}
-            <Link href='/past_papers' className="text-[#93c5fd] whitespace-nowrap hover:text-white transition-colors">
-              {/* Use responsive text without window.innerWidth which causes hydration issues */}
+            {/* <Link href='/past_papers' className="text-[#93c5fd] whitespace-nowrap hover:text-white transition-colors">
+              
               <span className="hidden sm:inline">View Papers</span>
               <span className="sm:hidden">Papers</span>
-            </Link>
+            </Link> */}
 
             {/* Desktop search bar */}
             <div className="hidden sm:flex items-center relative ml-4">
