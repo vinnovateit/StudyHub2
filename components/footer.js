@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Github, Instagram, X } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -7,10 +8,10 @@ const Footer = () => {
       {/* VinnovateIT Logo */}
       <div className="flex items-center">
         <Image
-          src="/img/VinnovateIT_logo_black 1.png"
+          src="/whiteLogoViit.svg"
           alt="VinnovateIT Logo"
           width={80}
-          height={40}
+          height={50}
           className="opacity-80 hover:opacity-100 transition"
         />
       </div>
@@ -18,25 +19,27 @@ const Footer = () => {
       {/* Social Links */}
       <div className="flex space-x-6">
         <Link
-          href="https://github.com"
+          href="https://github.com/vinnovateit"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <i className="fab fa-github text-3xl text-[#93c5fd] hover:text-white transition duration-300"></i>
+          <Github className="w-8 h-8 text-[#93c5fd] hover:text-white transition duration-300" />
         </Link>
+
         <Link
-          href="https://instagram.com"
+          href="https://www.instagram.com/vinnovateit/?hl=en"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <i className="fab fa-instagram text-3xl text-[#93c5fd] hover:text-white transition duration-300"></i>
+          <Instagram className="w-8 h-8 text-[#93c5fd] hover:text-white transition duration-300" />
         </Link>
+
         <Link
-          href="https://twitter.com"
+          href="https://x.com/v_innovate_it?lang=en"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <i className="fab fa-twitter text-3xl text-[#93c5fd] hover:text-white transition duration-300"></i>
+          <X className="w-8 h-8 text-[#93c5fd] hover:text-white transition duration-300" />
         </Link>
       </div>
     </footer>
