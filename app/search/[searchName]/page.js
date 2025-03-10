@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 async function getData(s) {
-  const prop = await fetch(`http://localhost:3000/api/search/`, {
+  const prop = await fetch(`${process.env.VERCEL_URL}/api/search/`, {
     method: "POST",
     body: JSON.stringify({ searchQuery: s }),
   });

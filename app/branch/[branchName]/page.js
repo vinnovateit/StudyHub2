@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
 }
 
 async function getData(s) {
-  const prop = await fetch(`http://localhost:3000/api/branch/`, {
+  const prop = await fetch(`${process.env.VERCEL_URL}/api/branch/`, {
     method: "POST",
     body: JSON.stringify({ searchQuery: s }),
   });
