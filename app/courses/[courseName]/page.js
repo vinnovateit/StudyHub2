@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 async function getData(courseCode) {
-  const prop = await fetch(`http://localhost:3000/api/courses/`, {
+  const prop = await fetch(`${process.env.VERCEL_URL}/api/courses/`, {
     method: "POST",
     body: JSON.stringify({ courseCode }),
   });
