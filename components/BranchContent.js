@@ -21,7 +21,8 @@ const BranchContent = ({ subjects, branchName, errors }) => {
       <div className={`${ibmPlexMono.className} min-h-screen flex flex-col items-center justify-center bg-[#1E1E1E]`}>
         <div className="p-6 w-full flex flex-col items-center">
           <h1 className="text-center mb-3 text-red-500 font-bold text-xl">
-            No courses found for {branchName}
+            {/* No courses found for {branchName} */}
+            Coming Soon...
           </h1>
         </div>
       </div>

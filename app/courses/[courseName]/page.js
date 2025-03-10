@@ -31,8 +31,17 @@ export default async function Page({ params }) {
       <Head>
         <title>StudyHub | {Course.code}</title>
       </Head>
+
+      <div className={`${ibmPlexMono.className} min-h-screen flex flex-col items-center justify-center bg-[#1E1E1E]`}>
+        <div className="p-6 w-full flex flex-col items-center">
+          <h1 className="text-center mb-3 text-red-500 font-bold text-xl">
+            {/* No courses found for {branchName} */}
+            Coming Soon...
+          </h1>
+        </div>
+      </div>
      
-      <div className="relative">
+      {/* <div className="relative">
         <div className="max-w-7xl mx-auto p-6 rounded-lg mt-6">
           {errors ? (
             <div className="text-center py-10">
@@ -145,7 +154,7 @@ export default async function Page({ params }) {
             </>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
