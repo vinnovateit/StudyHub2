@@ -1,6 +1,7 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "studyhub"
 main = ".open-next/worker.js"
+keep_vars = true
 
 compatibility_date = "2026-04-19"
 compatibility_flags = ["nodejs_compat"]
