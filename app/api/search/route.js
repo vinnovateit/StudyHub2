@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
-export const runtime = "nodejs";
 import courses from "../../../models/Courses";
 import Fuse from "fuse.js";
 

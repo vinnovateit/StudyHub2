@@ -1,6 +1,5 @@
 // File: /app/api/courses/route.js
 import connectDB from "@/lib/connectDB";
-export const runtime = "nodejs";
 import Courses from '@/models/Courses'; // Adjust this import based on your actual model structure
 
 export async function GET(request) {

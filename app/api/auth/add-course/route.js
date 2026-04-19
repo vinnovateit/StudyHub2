@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
-export const runtime = "nodejs";
 import Course from "@/models/Courses";
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
