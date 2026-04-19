@@ -20,6 +20,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import DraggableResourceItem from './DraggableResourceItem';
+import ConfirmActionModal from './ConfirmActionModal';
 
 const ModuleTopicResources = ({ 
   title, 
@@ -37,6 +38,12 @@ const ModuleTopicResources = ({
   const fileInputRef = useRef(null);
   const [pendingFiles, setPendingFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    onConfirm: null,
+  });
+  const DELETE_CONFIRM_MESSAGE =
+    'Delete this item? This action cannot be undone, and deletion activity is logged.';
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -88,6 +95,19 @@ const ModuleTopicResources = ({
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const removePendingFile = (index) => {
+    setConfirmDialog({
+      isOpen: true,
+      onConfirm: () => {
+        setPendingFiles((prev) => prev.filter((_, i) => i !== index));
+        setConfirmDialog({
+          isOpen: false,
+          onConfirm: null,
+        });
+      },
+    });
   };
 
   const handleDragEnd = (event) => {
@@ -184,9 +204,7 @@ const ModuleTopicResources = ({
               />
               <button
                 type="button"
-                onClick={() =>
-                  setPendingFiles((prev) => prev.filter((_, i) => i !== index))
-                }
+                onClick={() => removePendingFile(index)}
                 className="justify-self-end text-red-600 hover:text-red-700"
               >
                 <FaRegTrashAlt />
@@ -222,6 +240,21 @@ const ModuleTopicResources = ({
           </div>
         </SortableContext>
       </DndContext>
+
+      <ConfirmActionModal
+        isOpen={confirmDialog.isOpen}
+        title="Confirm Deletion"
+        message={DELETE_CONFIRM_MESSAGE}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => confirmDialog.onConfirm?.()}
+        onCancel={() =>
+          setConfirmDialog({
+            isOpen: false,
+            onConfirm: null,
+          })
+        }
+      />
     </div>
   );
 };

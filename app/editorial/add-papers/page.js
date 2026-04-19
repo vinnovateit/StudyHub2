@@ -7,6 +7,7 @@ import {
   getDocumentUploadError,
   isAllowedDocumentUpload,
 } from "@/lib/documentUpload";
+import ConfirmActionModal from "@/components/ConfirmActionModal";
 
 export default function PaperForm({ onSubmit, initialData = {} }) {
   const [formData, setFormData] = useState({
@@ -27,6 +28,12 @@ export default function PaperForm({ onSubmit, initialData = {} }) {
   const [pendingFile, setPendingFile] = useState(null);
   const [pendingFileName, setPendingFileName] = useState("");
   const [filePreview, setFilePreview] = useState(initialData.pdfLink || "");
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    onConfirm: null,
+  });
+  const DELETE_CONFIRM_MESSAGE =
+    "Delete this file? This action cannot be undone, and deletion activity is logged.";
 
   const uploadPaperFile = async (file, desiredFileName) => {
     const token = localStorage.getItem("token");
@@ -215,19 +222,29 @@ export default function PaperForm({ onSubmit, initialData = {} }) {
   };
 
   const removeFile = () => {
-    if (filePreview && filePreview.startsWith("blob:")) {
-      URL.revokeObjectURL(filePreview);
-    }
-    setFormData((prev) => ({
-      ...prev,
-      pdfLink: "",
-      pdfKey: "",
-      fileName: "",
-      storageType: "link",
-    }));
-    setFilePreview("");
-    setPendingFile(null);
-    setPendingFileName("");
+    setConfirmDialog({
+      isOpen: true,
+      onConfirm: () => {
+        if (filePreview && filePreview.startsWith("blob:")) {
+          URL.revokeObjectURL(filePreview);
+        }
+
+        setFormData((prev) => ({
+          ...prev,
+          pdfLink: "",
+          pdfKey: "",
+          fileName: "",
+          storageType: "link",
+        }));
+        setFilePreview("");
+        setPendingFile(null);
+        setPendingFileName("");
+        setConfirmDialog({
+          isOpen: false,
+          onConfirm: null,
+        });
+      },
+    });
   };
 
   return (
@@ -427,6 +444,21 @@ export default function PaperForm({ onSubmit, initialData = {} }) {
         </div>
         {errors.submit && <p className="mt-3 text-sm text-red-600">{errors.submit}</p>}
       </form>
+
+      <ConfirmActionModal
+        isOpen={confirmDialog.isOpen}
+        title="Confirm Deletion"
+        message={DELETE_CONFIRM_MESSAGE}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => confirmDialog.onConfirm?.()}
+        onCancel={() =>
+          setConfirmDialog({
+            isOpen: false,
+            onConfirm: null,
+          })
+        }
+      />
     </div>
   );
 }

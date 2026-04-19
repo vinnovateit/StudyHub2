@@ -19,6 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import DraggableResourceItem from "./DraggableResourceItem";
 import ModuleTopicResources from "./ModuleTopicResources";
+import ConfirmActionModal from "./ConfirmActionModal";
 
 const CourseForm = ({ courseCode }) => {
   const [course, setCourse] = useState({
@@ -37,8 +38,47 @@ const CourseForm = ({ courseCode }) => {
     exists: false,
     course: null,
   });
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    confirmText: "Confirm",
+    onConfirm: null,
+  });
+  const DELETE_CONFIRM_MESSAGE =
+    "Delete this item? This action cannot be undone, and deletion activity is logged.";
+  const CLEAR_CONFIRM_MESSAGE =
+    "Clear all form data? Unsaved changes will be removed.";
 
   const isEditMode = Boolean(courseCode);
+
+  const closeConfirmDialog = () => {
+    setConfirmDialog({
+      isOpen: false,
+      title: "",
+      message: "",
+      confirmText: "Confirm",
+      onConfirm: null,
+    });
+  };
+
+  const showConfirmDialog = ({
+    title = "Confirm Deletion",
+    message,
+    confirmText = "Delete",
+    onConfirm,
+  }) => {
+    setConfirmDialog({
+      isOpen: true,
+      title,
+      message,
+      confirmText,
+      onConfirm: () => {
+        onConfirm();
+        closeConfirmDialog();
+      },
+    });
+  };
 
   // Load existing course data when editing
   useEffect(() => {
@@ -608,20 +648,36 @@ const CourseForm = ({ courseCode }) => {
   };
 
   const removeResourceItem = (resourceType, index) => {
-    const updatedResources = [...course[resourceType]];
-    updatedResources.splice(index, 1);
-    setCourse({
-      ...course,
-      [resourceType]: updatedResources,
+    showConfirmDialog({
+      message: DELETE_CONFIRM_MESSAGE,
+      onConfirm: () => {
+        setCourse((prevCourse) => {
+          const updatedResources = [...prevCourse[resourceType]];
+          updatedResources.splice(index, 1);
+
+          return {
+            ...prevCourse,
+            [resourceType]: updatedResources,
+          };
+        });
+      },
     });
   };
 
   const removeModuleResource = (moduleIndex, resourceType, resourceIndex) => {
-    const updatedModules = [...course.modules];
-    updatedModules[moduleIndex][resourceType].splice(resourceIndex, 1);
-    setCourse({
-      ...course,
-      modules: updatedModules,
+    showConfirmDialog({
+      message: DELETE_CONFIRM_MESSAGE,
+      onConfirm: () => {
+        setCourse((prevCourse) => {
+          const updatedModules = [...prevCourse.modules];
+          updatedModules[moduleIndex][resourceType].splice(resourceIndex, 1);
+
+          return {
+            ...prevCourse,
+            modules: updatedModules,
+          };
+        });
+      },
     });
   };
 
@@ -631,32 +687,45 @@ const CourseForm = ({ courseCode }) => {
     resourceType,
     resourceIndex
   ) => {
-    const updatedModules = [...course.modules];
-    updatedModules[moduleIndex].topics[topicIndex][resourceType].splice(
-      resourceIndex,
-      1
-    );
-    setCourse({
-      ...course,
-      modules: updatedModules,
+    showConfirmDialog({
+      message: DELETE_CONFIRM_MESSAGE,
+      onConfirm: () => {
+        setCourse((prevCourse) => {
+          const updatedModules = [...prevCourse.modules];
+          updatedModules[moduleIndex].topics[topicIndex][resourceType].splice(
+            resourceIndex,
+            1
+          );
+
+          return {
+            ...prevCourse,
+            modules: updatedModules,
+          };
+        });
+      },
     });
   };
 
   const clearForm = () => {
-    if (window.confirm("Are you sure you want to clear all form data?")) {
-      localStorage.removeItem("courseFormData");
-      setCourse({
-        name: "",
-        code: "",
-        credits: "",
-        description: "",
-        preview: "",
-        modules: [],
-        links: [],
-        videos: [],
-        DAs: [],
-      });
-    }
+    showConfirmDialog({
+      title: "Clear Form Data",
+      message: CLEAR_CONFIRM_MESSAGE,
+      confirmText: "Clear",
+      onConfirm: () => {
+        localStorage.removeItem("courseFormData");
+        setCourse({
+          name: "",
+          code: "",
+          credits: "",
+          description: "",
+          preview: "",
+          modules: [],
+          links: [],
+          videos: [],
+          DAs: [],
+        });
+      },
+    });
   };
 
   const saveCourse = async () => {
@@ -763,25 +832,37 @@ const CourseForm = ({ courseCode }) => {
   };
 
   const removeModule = (moduleIndex) => {
-    if (window.confirm("Are you sure you want to remove this module?")) {
-      const updatedModules = [...course.modules];
-      updatedModules.splice(moduleIndex, 1);
-      setCourse({
-        ...course,
-        modules: updatedModules,
-      });
-    }
+    showConfirmDialog({
+      message: DELETE_CONFIRM_MESSAGE,
+      onConfirm: () => {
+        setCourse((prevCourse) => {
+          const updatedModules = [...prevCourse.modules];
+          updatedModules.splice(moduleIndex, 1);
+
+          return {
+            ...prevCourse,
+            modules: updatedModules,
+          };
+        });
+      },
+    });
   };
 
   const removeTopic = (moduleIndex, topicIndex) => {
-    if (window.confirm("Are you sure you want to remove this topic?")) {
-      const updatedModules = [...course.modules];
-      updatedModules[moduleIndex].topics.splice(topicIndex, 1);
-      setCourse({
-        ...course,
-        modules: updatedModules,
-      });
-    }
+    showConfirmDialog({
+      message: DELETE_CONFIRM_MESSAGE,
+      onConfirm: () => {
+        setCourse((prevCourse) => {
+          const updatedModules = [...prevCourse.modules];
+          updatedModules[moduleIndex].topics.splice(topicIndex, 1);
+
+          return {
+            ...prevCourse,
+            modules: updatedModules,
+          };
+        });
+      },
+    });
   };
 
   const sensors = useSensors(
@@ -1271,6 +1352,16 @@ const CourseForm = ({ courseCode }) => {
           Clear Form
         </button>
       </div>
+
+      <ConfirmActionModal
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        confirmText={confirmDialog.confirmText}
+        cancelText="Cancel"
+        onConfirm={() => confirmDialog.onConfirm?.()}
+        onCancel={closeConfirmDialog}
+      />
     </div>
   );
 };
