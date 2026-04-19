@@ -9,7 +9,7 @@ export default function EditCourse() {
         <ChooseCourse/>
       </div>
       <div className="mt-8 mb-4">
-        <Link href="edit-hub">
+        <Link href="/editorial/edit-hub">
           <p className="text-blue-400 hover:text-blue-600 text-xl">Back to Editorial Hub</p>
         </Link>
       </div>

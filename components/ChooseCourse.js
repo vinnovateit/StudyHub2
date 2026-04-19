@@ -99,7 +99,7 @@ export default function ChooseCourse() {
           </div>
         )}
 
-        <Link href="/edit-hub" className="mt-8 text-blue-400 hover:text-blue-300 text-xl">
+        <Link href="/editorial/edit-hub" className="mt-8 text-blue-400 hover:text-blue-300 text-xl">
           Back to Editorial Hub
         </Link>
       </div>
