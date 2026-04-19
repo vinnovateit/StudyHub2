@@ -154,10 +154,6 @@ export default function LoginPage() {
           <div className="space-y-5">
             <div ref={googleButtonRef} className="flex justify-center min-h-[44px]" />
 
-            <p className={`${ibmPlexMono.className} text-xs text-center text-blue-700/75`}>
-              Sign in with your @{GOOGLE_ALLOWED_DOMAIN || "organization"} email.
-            </p>
-
             {loading && (
               <p
                 className={`${ibmPlexMono.className} text-blue-600 text-sm flex items-center justify-center gap-2`}
