@@ -28,11 +28,9 @@ export async function GET(request) {
       ? 'Set MONGO_URI (or MONGO_URI_DIRECT for Cloudflare) and optional MONGO_DB_NAME in Worker secrets/vars.'
       : reason.includes('dns.resolveTxt is not implemented yet')
         ? 'Cloudflare Workers cannot use mongodb+srv here. Set MONGO_URI_DIRECT to a standard mongodb:// Atlas URI with explicit hosts.'
-        : reason.includes('not whitelisted')
-          ? 'MongoDB Atlas IP whitelist issue. Go to Atlas Network Access, add 0.0.0.0/0 (or specific Cloudflare IPs). Restart connection after changes.'
-          : reason.toLowerCase().includes('server selection') || reason.toLowerCase().includes('timed out')
-            ? 'Check MongoDB Atlas Network Access. Cloudflare Worker egress must be allowed.'
-            : undefined;
+        : reason.toLowerCase().includes('server selection') || reason.toLowerCase().includes('timed out')
+          ? 'Check MongoDB Atlas Network Access. Cloudflare Worker egress must be allowed.'
+          : undefined;
     
     // Return error response
     return new Response(JSON.stringify({ error: 'Failed to fetch courses', reason, hint }), {
