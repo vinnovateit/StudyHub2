@@ -5,10 +5,16 @@ const UrlSchema = new mongoose.Schema(
     text: { type: String, required: true, trim: true },
     url: { type: String, required: true, trim: true },
     order: { type: Number, default: 0 },
+    storageType: {
+      type: String,
+      enum: ["link", "r2"],
+      default: "link",
+    },
     // future S3 support
     isS3: { type: Boolean, default: false },
     key: { type: String },
     mimetype: { type: String },
+    fileName: { type: String, trim: true },
   },
   { _id: false }
 );

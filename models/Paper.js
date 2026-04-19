@@ -36,6 +36,19 @@ const PaperSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    pdfKey: {
+      type: String,
+      trim: true,
+    },
+    fileName: {
+      type: String,
+      trim: true,
+    },
+    storageType: {
+      type: String,
+      enum: ["link", "r2"],
+      default: "link",
+    },
     isS3: {
       type: Boolean,
       default: false,

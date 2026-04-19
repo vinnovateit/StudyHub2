@@ -82,14 +82,14 @@ export function Modules({ modules }) {
                 <div key={idx} className="mb-6 border-l-2 border-[#16171C] pl-4">
                   <h4 className="font-bold text-lg text-[#16171C]">{topic.name}</h4>
                   {topic.description && <p className="mb-2">{topic.description}</p>}
-                  <ResourceList resources={topic.pdfs} title="PDFs" />
+                  <ResourceList resources={topic.pdfs} title="Files" />
                   <ResourceList resources={topic.links} title="Links" />
                   <ResourceList resources={topic.videos} title="Videos" />
                 </div>
               ))}
 
               <div className="mt-6 border-t border-[#16171C] pt-4">
-                <ResourceList resources={module.pdfs} title="Module PDFs" />
+                <ResourceList resources={module.pdfs} title="Module Files" />
                 <ResourceList resources={module.links} title="Module Links" />
                 <ResourceList resources={module.videos} title="Module Videos" />
               </div>
