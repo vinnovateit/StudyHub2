@@ -2,8 +2,44 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const getBranchRoute = (branchName) =>
+  `/branch/${encodeURIComponent(branchName.toLowerCase())}`;
 
 export default function Home() {
+  const [branches, setBranches] = useState([]);
+  const [isLoadingBranches, setIsLoadingBranches] = useState(true);
+  const [branchError, setBranchError] = useState("");
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        const response = await fetch("/api/get-branch");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch branches");
+        }
+
+        const data = await response.json();
+        const normalizedBranches = Array.isArray(data)
+          ? data
+              .filter((branch) => branch?.name)
+              .sort((a, b) => a.name.localeCompare(b.name))
+          : [];
+
+        setBranches(normalizedBranches);
+      } catch (error) {
+        console.error("Error fetching branches:", error);
+        setBranchError("Unable to load branches right now.");
+      } finally {
+        setIsLoadingBranches(false);
+      }
+    };
+
+    fetchBranches();
+  }, []);
+
   return (
     <div className="min-h-screen py-8 pb-24 bg-[#1E1E1E] flex flex-col items-center justify-center font-ibm px-4 md:px-8 lg:px-12 relative">
       {/* Heading Section */}
@@ -41,23 +77,29 @@ export default function Home() {
           Choose your Branch
         </h2>
         <div className="flex flex-wrap justify-center gap-4 mt-8">
-          {[
-            { name: "IT", route: "/branch/it" },
-            { name: "CSE", route: "/branch/cse" },
-            { name: "MECH", route: "/branch/mech" },
-            { name: "ECE", route: "/branch/ece" },
-            { name: "EEE", route: "/branch/eee" },
-            { name: "CIVIL", route: "/branch/civil" },
-            { name: "1st SEM", route: "/branch/firstsem" },
-          ].map((branch) => (
-            <a
-              key={branch.name}
-              href={branch.route}
-              className="bg-[#93c5fd] text-[#0d1321] font-semibold text-sm sm:text-base px-5 py-3 rounded-md hover:bg-[#60a5fa] transition shadow-md"
-            >
-              {branch.name}
-            </a>
-          ))}
+          {isLoadingBranches && (
+            <p className="text-gray-400 text-sm sm:text-base">Loading branches...</p>
+          )}
+
+          {!isLoadingBranches && branchError && (
+            <p className="text-red-400 text-sm sm:text-base">{branchError}</p>
+          )}
+
+          {!isLoadingBranches && !branchError && branches.length === 0 && (
+            <p className="text-gray-400 text-sm sm:text-base">No branches found.</p>
+          )}
+
+          {!isLoadingBranches &&
+            !branchError &&
+            branches.map((branch) => (
+              <Link
+                key={branch._id || branch.name}
+                href={getBranchRoute(branch.name)}
+                className="bg-[#93c5fd] text-[#0d1321] font-semibold text-sm sm:text-base px-5 py-3 rounded-md hover:bg-[#60a5fa] transition shadow-md"
+              >
+                {branch.name}
+              </Link>
+            ))}
         </div>
       </div>
     </div>
