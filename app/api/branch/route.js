@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
+export const runtime = "nodejs";
 import branch from "../../../models/Branch";
 // NOTE: Do NOT remove unless you are sure what you are doing
 // Yes, your IDE is right & the import is technically unused,

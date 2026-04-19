@@ -3,6 +3,8 @@ import connectDB from "@/lib/connectDB";
 import Paper from "@/models/Paper";
 import { verifyToken } from "@/lib/auth";
 
+export const runtime = "nodejs";
+
 // Update paper
 async function patchHandler(req, { params }) {
   try {
