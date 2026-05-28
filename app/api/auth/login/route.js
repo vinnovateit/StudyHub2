@@ -92,6 +92,8 @@ export async function POST(req) {
       );
     }
 
+    const isAllowedEmail = ALLOWED_GOOGLE_EMAILS.includes(userEmail);
+
     const isAllowedDomain = GOOGLE_ALLOWED_DOMAIN
       ? userEmail.endsWith(`@${GOOGLE_ALLOWED_DOMAIN}`)
       : true;
@@ -101,11 +103,10 @@ export async function POST(req) {
         ? hostedDomain === GOOGLE_ALLOWED_DOMAIN
         : true;
 
-    const isAllowedEmail = ALLOWED_GOOGLE_EMAILS.length
-      ? ALLOWED_GOOGLE_EMAILS.includes(userEmail)
-      : true;
+    const isAuthorized =
+      isAllowedEmail || (isAllowedDomain && isAllowedHostedDomain);
 
-    if (!isAllowedDomain || !isAllowedHostedDomain || !isAllowedEmail) {
+    if (!isAuthorized) {
       return NextResponse.json(
         {
           message: "Only organization Google accounts are authorized.",

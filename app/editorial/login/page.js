@@ -7,11 +7,6 @@ import { AlertCircle, Loader } from "lucide-react";
 import { IBM_Plex_Mono, Poppins } from "next/font/google";
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-const GOOGLE_ALLOWED_DOMAIN = (process.env.NEXT_PUBLIC_GOOGLE_ALLOWED_DOMAIN || "")
-  .trim()
-  .toLowerCase()
-  .replace(/^@/, "");
-
 const poppins = Poppins({
   weight: ["600"],
   subsets: ["latin"],
@@ -90,15 +85,9 @@ export default function LoginPage() {
       return;
     }
 
-    if (!GOOGLE_ALLOWED_DOMAIN) {
-      triggerError("Organization domain is not configured.");
-      return;
-    }
-
     window.google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
       callback: handleGoogleCredential,
-      hd: GOOGLE_ALLOWED_DOMAIN,
     });
 
     googleButtonRef.current.innerHTML = "";
