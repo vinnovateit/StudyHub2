@@ -25,7 +25,9 @@ export default function ChooseCourse() {
     // Fetch all courses from the database
     const fetchCourses = async () => {
       try {
-        const response = await fetch('/api/get-courses');
+        const response = await fetch('/api/get-courses', {
+          cache: 'no-store',
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch courses');
         }

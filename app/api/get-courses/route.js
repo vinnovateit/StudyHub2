@@ -2,6 +2,9 @@
 import connectDB from "@/lib/connectDB";
 import Courses from '@/models/Courses'; // Adjust this import based on your actual model structure
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(request) {
   try {
     // Connect to the database
@@ -17,6 +20,7 @@ export async function GET(request) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
       },
     });
   } catch (error) {
@@ -36,6 +40,7 @@ export async function GET(request) {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
       },
     });
   }
