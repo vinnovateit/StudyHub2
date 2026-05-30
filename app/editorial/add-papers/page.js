@@ -8,6 +8,7 @@ import {
   isAllowedDocumentUpload,
 } from "@/lib/documentUpload";
 import ConfirmActionModal from "@/components/ConfirmActionModal";
+import { readResponseBody } from "@/lib/readResponseBody";
 
 export default function PaperForm({ onSubmit, initialData = {} }) {
   const [formData, setFormData] = useState({
@@ -57,7 +58,7 @@ export default function PaperForm({ onSubmit, initialData = {} }) {
       body: payload,
     });
 
-    const data = await response.json();
+    const data = await readResponseBody(response);
 
     if (!response.ok) {
       throw new Error(data.error || "Failed to upload file");
@@ -186,7 +187,7 @@ export default function PaperForm({ onSubmit, initialData = {} }) {
         }),
       });
 
-      const data = await response.json();
+      const data = await readResponseBody(response);
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to save paper");
